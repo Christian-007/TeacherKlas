@@ -7,14 +7,17 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Image
+  Image,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import commonStyles from '../../common/CommonStyleSheet';
+import Loader from '../../common/Loader';
 import styles from './Stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { validateForm } from '../../config/api';
-import { registerUser } from '../../actions'
+import { registerUser } from '../../actions';
 
 class SignupPage extends Component {
   constructor(props) {
@@ -24,6 +27,8 @@ class SignupPage extends Component {
       password: '',
       confirmPass: '',
       errors: {},
+      disableSubmit: false,
+      loading: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -41,9 +46,31 @@ class SignupPage extends Component {
     return isValid;
   }
 
-  async onSubmit() {
+  showAlert() {
+    Alert.alert(
+      'Email Verification',
+      'Please check your email inbox and click the verification link to finish the registration process!',
+      [
+        {text: 'OK', onPress: () => this.props.navigation.goBack()},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  showErrorAlert() {
+    Alert.alert(
+      'Submission Error',
+      `There's something wrong..`,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  async onSubmit() {  
     if(this.formValidation()){
-      this.setState({ errors: {} });
+      this.setState({ errors: {}, loading: true, disableSubmit: true });
       const newUser = {
         email: this.state.email,
         password: this.state.password,
@@ -52,8 +79,16 @@ class SignupPage extends Component {
   
       try {
         const response = await this.props.registerUser(newUser);
+        await this.setState({ loading: false, disableSubmit: false });
+        setTimeout(() => {
+          this.showAlert();
+        }, 500);
         console.log('response: ' + JSON.stringify(response));
       } catch (error) {
+        this.setState({ loading: false, disableSubmit: false });
+        setTimeout(() => {
+          this.showErrorAlert();
+        }, 500);
         console.log('error: ' +  JSON.stringify(error));
       }
       console.log('no error on client side');
@@ -92,16 +127,18 @@ class SignupPage extends Component {
         fontSize: 12,
         letterSpacing: 3,
         color: '#7a7a7a',
-      }
+      },
     };
   };
 
   render() {
     const { isLoading } = this.props;
-    const { errors } = this.state;
+    const { errors, disableSubmit } = this.state;
 
     return (
       <View style={styles.container}>
+        <Loader
+          loading={this.state.loading} />
         <Image
           style={styles.imageLogo}
           source={require('../../assets/images/klaslogotext.png')}
@@ -160,7 +197,7 @@ class SignupPage extends Component {
           </View>
         </View>
         
-        <TouchableOpacity style={styles.submitWrapper} onPress={this.onSubmit}>
+        <TouchableOpacity style={styles.submitWrapper} onPress={this.onSubmit} disabled={disableSubmit}>
           <Text style={styles.button}>
             {isLoading ? 'SUBMITTING...' : 'SIGN UP'}
           </Text>
