@@ -14,6 +14,8 @@ import SignupPage from './components/SignupPage/SignupPage';
 import HomePage from './components/HomePage/HomePage';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 
+import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
+
 const headerStyling = {
   backgroundColor: '#fff',
   elevation: 0,
@@ -64,6 +66,13 @@ export const SignedOut = StackNavigator({
       headerStyle: headerStyling,
     })
   },
+});
+
+/* --- Complete Profile Navigations ---- */
+const CompleteProfile = StackNavigator({
+  PersonalDetail: {
+    screen: PersonalDetailPage,
+  }
 });
 
 /* --- Signed in Navigations ---- */
@@ -145,7 +154,10 @@ export const createRootNavigator = (signedIn = false) => {
       },
       SignedOut: {
         screen: SignedOut
-      }
+      },
+      CompleteProfile: {
+        screen: CompleteProfile
+      },
     },
     {
       initialRouteName: signedIn ? "SignedIn" : "SignedOut"

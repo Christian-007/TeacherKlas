@@ -18,6 +18,7 @@ export function registerUser(data) {
             // const sendEmail = await user.sendEmailVerification();
             await database.ref('teachers/' + user.uid).set({
               email: data.email,
+              completeProfile: false,
             }, function(error) {
               if (error) {
                 reject(error);
@@ -48,7 +49,13 @@ export function loginUser(data) {
 
     try {
       const loginApi = await auth.signInWithEmailAndPassword(data.email, data.password);
-      const isVerified = loginApi.emailVerified;
+      
+      // FOR DEVELOPMENT
+      dispatch(loginSuccess(loginApi));
+      resolve(loginApi);
+
+      /* FOR PRODUCTION */
+      /*const isVerified = loginApi.emailVerified;
       const notVerified = {
         err: 'email is not verified'
       };
@@ -57,7 +64,7 @@ export function loginUser(data) {
         resolve(loginApi);
       } else {
         reject(notVerified);
-      }
+      }*/
     } catch (error) {
       dispatch(authError(error));
       reject(error);

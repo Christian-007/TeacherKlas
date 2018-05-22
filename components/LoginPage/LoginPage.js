@@ -6,33 +6,79 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import commonStyles from '../../common/CommonStyleSheet';
 import { Label, Input, Item } from 'native-base';
 import styles from './Stylesheet';
 import { onSignIn } from "../../auth";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import { validateForm } from '../../config/api';
+import { loginUser } from '../../actions';
+import Loader from '../../common/Loader';
 
-export default class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      email: '',
-      password: ''
-    };
-  }
-
+class LoginPage extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       title: 'LOGIN AS TEACHER'
     }
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { 
+      email: '',
+      password: '',
+      errors: {},
+      disableSubmit: false,
+      loading: false,
+    };
+    this.onClickSignIn = this.onClickSignIn.bind(this);
+  }
+  
+  async onClickSignIn() {
+    this.setState({ errors: {}, loading: true, disableSubmit: true });
+    const loginData = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    try {
+      const response = await this.props.loginUser(loginData);
+      await this.setState({ loading: false, disableSubmit: false });
+      onSignIn().then(() => this.props.navigation.navigate("SignedIn"));
+      console.log('response: ' + JSON.stringify(response));
+    } catch (error) {
+      const { errorFromStore } = this.props;
+      await this.setState({ loading: false, disableSubmit: false });
+      setTimeout(() => {
+        this.showErrorAlert();
+      }, 500);
+      console.log('error from Promise: ' +  JSON.stringify(error));
+      console.log('error from Store: ' +  JSON.stringify(errorFromStore));
+    }
+  }
+
+  showErrorAlert() {
+    Alert.alert(
+      'Submission Error',
+      `There's something wrong..`,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
   render() {
-    const errors = '';
+    const { isLoading } = this.props;
+    const { errors, disableSubmit } = this.state;
 
     return (
       <View style={styles.container}>
+        <Loader loading={this.state.loading} />
         <Image
           style={styles.imageLogo}
           source={require('../../assets/images/klaslogotext.png')}
@@ -75,33 +121,9 @@ export default class LoginPage extends Component {
             </Text>
           </View>
         </View>
-        {/* <View style={styles.inputWrapper}>
-          <TextInput
-            underlineColorAndroid='transparent'
-            style={[styles.input, styles.inputBorderBtm]} 
-            onChangeText={(email) => this.setState({email})}
-            value={this.state.email}
-            placeholder="Your Email"
-            placeholderTextColor="#b3b3b3"
-          />
-          <TextInput
-            underlineColorAndroid='transparent'
-            style={styles.input} 
-            onChangeText={(password) => this.setState({password})}
-            value={this.state.password}
-            placeholder="Your Password"
-            placeholderTextColor="#b3b3b3"
-            secureTextEntry={true}
-          />
-        </View> */}
-        <TouchableOpacity style={styles.submitWrapper}>
-          <Text 
-            style={styles.button}
-            onPress={() => {
-              onSignIn().then(() => this.props.navigation.navigate("SignedIn"));
-            }}
-          >
-            LOGIN
+        <TouchableOpacity style={styles.submitWrapper} onPress={this.onClickSignIn} disabled={disableSubmit}>
+          <Text style={styles.button}>
+            {isLoading ? 'SUBMITTING...' : 'LOGIN'}
           </Text>
         </TouchableOpacity>
         <View style={styles.textWrapper}>
@@ -119,3 +141,15 @@ export default class LoginPage extends Component {
     );
   }
 }
+
+LoginPage.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  isLoading: state.authReducer.isLoading,
+  errorFromStore: state.authReducer.error,
+});
+
+export default connect(mapStateToProps, { loginUser })(LoginPage);
