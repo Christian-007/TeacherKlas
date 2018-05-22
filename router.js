@@ -72,6 +72,10 @@ export const SignedOut = StackNavigator({
 const CompleteProfile = StackNavigator({
   PersonalDetail: {
     screen: PersonalDetailPage,
+    navigationOptions: {
+      headerStyle: headerStyling,
+      headerTitleStyle: headerTitleStyling
+    }
   }
 });
 
@@ -160,6 +164,7 @@ export const createRootNavigator = (signedIn = false) => {
       },
     },
     {
+      // initialRouteName: signedIn ? "SignedIn" : "CompleteProfile"
       initialRouteName: signedIn ? "SignedIn" : "SignedOut"
     }
   );

@@ -48,7 +48,11 @@ class LoginPage extends Component {
     try {
       const response = await this.props.loginUser(loginData);
       await this.setState({ loading: false, disableSubmit: false });
-      onSignIn().then(() => this.props.navigation.navigate("SignedIn"));
+      if(response) {
+        onSignIn().then(() => this.props.navigation.navigate("SignedIn"));
+      } else {
+        onSignIn().then(() => this.props.navigation.navigate("CompleteProfile"));
+      }
       console.log('response: ' + JSON.stringify(response));
     } catch (error) {
       const { errorFromStore } = this.props;

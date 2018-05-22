@@ -1,11 +1,23 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Button } from 'react-native'
+import styles from './Stylesheet';
 
 class PersonalDetail extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate("SignedIn")}
+          title="SKIP"
+        />
+      ),
+    }
+  };
+
   render() {
     return (
-      <View>
-        <Text> textInComponent </Text>
+      <View style={styles.container}>
+        <Text> Complete Your Profile </Text>
       </View>
     )
   }

@@ -49,10 +49,31 @@ export function loginUser(data) {
 
     try {
       const loginApi = await auth.signInWithEmailAndPassword(data.email, data.password);
-      
-      // FOR DEVELOPMENT
-      dispatch(loginSuccess(loginApi));
-      resolve(loginApi);
+      await auth.onAuthStateChanged(async (user) => {
+        if(user) {
+          try {
+            // const sendEmail = await user.sendEmailVerification();
+            await database.ref('/teachers/' + user.uid).once('value')
+              .then(function(snapshot) {
+                console.log('snapshot' + JSON.stringify(snapshot.val()));
+                const completeProfile = snapshot.val().completeProfile;
+                console.log('completeProfile: ' + completeProfile);
+        
+                // FOR DEVELOPMENT
+                dispatch(loginSuccess(loginApi));
+                resolve(completeProfile);
+              })
+              .catch((error) => {
+                console.log('error: ' + error);
+                reject(error);
+              });
+          } catch (error) {
+            reject(error);
+          }
+        } else {
+          reject(user);
+        }
+      });
 
       /* FOR PRODUCTION */
       /*const isVerified = loginApi.emailVerified;
