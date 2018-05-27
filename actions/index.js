@@ -106,10 +106,40 @@ export function logoutUser() {
   });
 }
 
+export function chooseSubject(title) {
+  return (dispatch) => new Promise( async resolve => {
+    await dispatch(addSubject(title));
+    resolve(true);
+  });
+}
+
+export function deleteSubject(subjectId) {
+  return (dispatch) => new Promise( async resolve => {
+    await dispatch(deleteSubject(subjectId));
+    resolve(true);
+  });
+}
+
 // Actions Creators
 const checkingStatus = () => {
   return {
     type: t.IS_LOADING,
+  }
+}
+
+let nextSubject = 0;
+const addSubject = (subject) => {
+  return {
+    type: t.ADD_SUBJECT,
+    id: nextSubject++,
+    data: subject
+  }
+}
+
+const deleteSubject = (subjectId) => {
+  return {
+    type: t.DELETE_SUBJECT,
+    id: subjectId
   }
 }
 

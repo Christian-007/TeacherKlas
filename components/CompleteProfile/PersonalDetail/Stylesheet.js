@@ -15,6 +15,7 @@ export default ScaledSheet.create({
     letterSpacing: 1,
     fontSize: '16@s',
   },
+  // --- START OF USER JOURNEY STYLE ---
   journey: {
     marginTop: '15@s',
     flexDirection: 'row',
@@ -23,6 +24,13 @@ export default ScaledSheet.create({
     paddingLeft: 50, paddingRight: 50,
     position: 'relative',
   },
+  hr: {
+    width: '90@s',
+    height: 2,
+    backgroundColor: '#cdccd8',
+    zIndex: 0,
+  },
+  // --- END OF USER JOURNEY STYLE ---
   inputWrapper: {
     marginTop: 20,
     paddingLeft: 30,
@@ -70,11 +78,5 @@ export default ScaledSheet.create({
   submitText: {
     color: 'white',
     letterSpacing: 2,
-  },
-  hr: {
-    width: '90@s',
-    height: 2,
-    backgroundColor: '#cdccd8',
-    zIndex: 0,
   },
 });

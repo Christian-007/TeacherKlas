@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import { 
-  StackNavigator,
-  TabNavigator,
-  TabBarBottom,
-  SwitchNavigator
+  createStackNavigator,
+  createBottomTabNavigator,
+  createSwitchNavigator
 } from 'react-navigation';
 import { Button, Text, View } from 'react-native';
 
@@ -15,6 +14,7 @@ import HomePage from './components/HomePage/HomePage';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 
 import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
+import SubjectModal from './components/CompleteProfile/PersonalDetail/SubjectModal';
 
 const headerStyling = {
   backgroundColor: '#fff',
@@ -50,7 +50,7 @@ const customBackBtn = (navigation) => {
 };
 
 // SignedOut Pages or First Landing Page
-export const SignedOut = StackNavigator({
+export const SignedOut = createStackNavigator({
   Login: {
     screen: LoginPage,
     title: 'LOGIN',
@@ -69,9 +69,16 @@ export const SignedOut = StackNavigator({
 });
 
 /* --- Complete Profile Navigations ---- */
-const CompleteProfile = StackNavigator({
+const CompleteProfile = createStackNavigator({
   PersonalDetail: {
     screen: PersonalDetailPage,
+    navigationOptions: {
+      headerStyle: headerStyling,
+      headerTitleStyle: headerTitleStyling
+    }
+  },
+  SubjectModal: {
+    screen: SubjectModal,
     navigationOptions: {
       headerStyle: headerStyling,
       headerTitleStyle: headerTitleStyling
@@ -80,7 +87,7 @@ const CompleteProfile = StackNavigator({
 });
 
 /* --- Signed in Navigations ---- */
-const HomeStack = StackNavigator({
+const HomeStack = createStackNavigator({
   Home: { 
     screen: HomePage,
     navigationOptions: {
@@ -91,7 +98,7 @@ const HomeStack = StackNavigator({
   },
 });
 
-const ProfileStack = StackNavigator({
+const ProfileStack = createStackNavigator({
   Profile: { 
     screen: ProfilePage,
     navigationOptions: {
@@ -103,7 +110,7 @@ const ProfileStack = StackNavigator({
 });
 
 // // FOR TESTING PURPOSE ONLY - DELETE BEFORE DEPLOYMENT!!!
-// const CurrentStack = StackNavigator({
+// const CurrentStack = createStackNavigator({
 //   Schedule: {
 //     screen: SchedulePage,
 //     navigationOptions: ({navigation}) => ({
@@ -114,7 +121,7 @@ const ProfileStack = StackNavigator({
 // // FOR TESTING PURPOSE ONLY - DELETE BEFORE DEPLOYMENT!!!
 
 // Pages after signed in
-export const SignedIn = TabNavigator({
+export const SignedIn = createBottomTabNavigator({
   Home: {
     screen: HomeStack,
     navigationOptions: {
@@ -144,14 +151,12 @@ export const SignedIn = TabNavigator({
       borderTopColor: '#f3f3f3'
     },
   },
-  tabBarComponent: TabBarBottom,
-  tabBarPosition: 'bottom',
 }
 );
 
 // Root Navigator: determine the root navigator
 export const createRootNavigator = (signedIn = false) => {
-  return SwitchNavigator(
+  return createSwitchNavigator(
     {
       SignedIn: {
         screen: SignedIn
@@ -164,8 +169,8 @@ export const createRootNavigator = (signedIn = false) => {
       },
     },
     {
-      // initialRouteName: signedIn ? "SignedIn" : "CompleteProfile"
-      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+      initialRouteName: signedIn ? "SignedIn" : "CompleteProfile"
+      // initialRouteName: signedIn ? "SignedIn" : "SignedOut"
     }
   );
 };

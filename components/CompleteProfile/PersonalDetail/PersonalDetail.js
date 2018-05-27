@@ -7,6 +7,9 @@ import styles from './Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { scale } from 'react-native-size-matters';
 import SubjectModal from './SubjectModal';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { deleteSubject } from '../../../actions';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -36,6 +39,7 @@ class PersonalDetail extends Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onAddSubject = this.onAddSubject.bind(this);
+    this.deleteSubject = this.deleteSubject.bind(this);
   }
 
   setModalVisible(visible) {
@@ -47,10 +51,26 @@ class PersonalDetail extends Component {
   }
 
   onAddSubject() {
-    this.setModalVisible(true);
+    // this.setModalVisible(true);
+    this.props.navigation.navigate('SubjectModal');
+  }
+
+  deleteSubject(subjectId) {
+    console.log('delete subject: ', subjectId);
+    this.props.deleteSubject(subjectId);
   }
 
   render() {
+    let subjects = this.props.subjectsObj.map(subject => (
+      <View key={subject.id}>
+        <Text>{subject.title}</Text>
+        <TouchableOpacity onPress={() => this.deleteSubject(subject.id)}>
+          <Text>
+            X
+          </Text>
+        </TouchableOpacity>
+      </View>
+    ));
 
     return (
       <View style={styles.container}>
@@ -98,7 +118,7 @@ class PersonalDetail extends Component {
               </View>
               <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>SCHEDULE</Text>
             </View>
-            <View style={{position: 'absolute', left:85, top:15, zIndex: 0, flexDirection:'row', }}>
+            <View style={{position: 'absolute', left:85, top:12, zIndex: 0, flexDirection:'row', }}>
               <View style={[styles.hr, {backgroundColor: '#cdccd8'}]}></View>
               <View style={[styles.hr, {marginLeft: 15}]}></View>
             </View>
@@ -140,6 +160,7 @@ class PersonalDetail extends Component {
           <Form style={styles.inputWrapper}>
             <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Subjects</Label>
             <View style={{flexDirection: 'row', marginTop: 10}}>
+              {subjects}
               <TouchableOpacity style={styles.addSubject} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
                 <Text style={[styles.subjectText, commonStyles.fontLato]}>
                   + ADD
@@ -172,4 +193,12 @@ class PersonalDetail extends Component {
   }
 }
 
-export default PersonalDetail;
+PersonalDetail.propTypes = {
+  subjectsObj: PropTypes.array.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  subjectsObj: state.completeProfileReducer
+});
+
+export default connect(mapStateToProps, { deleteSubject })(PersonalDetail);
