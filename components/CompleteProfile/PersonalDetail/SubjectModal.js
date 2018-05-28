@@ -40,18 +40,13 @@ class SubjectModal extends Component {
   addSubject(title) {
     console.log('subject: ', title);
     this.props.chooseSubject(title);
+    this.props.navigation.goBack();
   }
 
   render() {
     const { text } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fafafa'}}>
-        <View>
-          <Text>Test</Text>
-          {this.props.subjectsObj.map(subject => (
-            <Text key={subject.id}>{subject.title}</Text>
-          ))}
-        </View>
         <List dataArray={this.state.items}
           renderRow={(item) =>
           <ListItem onPress={() => {this.addSubject(item.title)}}>

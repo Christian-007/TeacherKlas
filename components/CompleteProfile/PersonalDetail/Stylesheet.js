@@ -47,13 +47,15 @@ export default ScaledSheet.create({
   addSubject: {
     borderWidth: 1,
     borderColor: '#d3d3d3',
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10,
+    borderRadius: 20,
+    marginRight: 5, marginBottom: 5,
   },
   subjectText: {
     color: '#d3d3d3',
-    letterSpacing: 2,
-    fontSize: 12,
   },
   summaryTextarea: {
     marginTop: 10,
@@ -79,4 +81,15 @@ export default ScaledSheet.create({
     color: 'white',
     letterSpacing: 2,
   },
+
+  // ADD SUBJECT STYLE
+  subjectBtn: {
+    backgroundColor: '#00b16e',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10,
+    borderRadius: 20,
+    marginRight: 5, marginBottom: 5,
+  }
 });

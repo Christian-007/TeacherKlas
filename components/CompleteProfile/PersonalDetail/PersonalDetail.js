@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
+import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
 import { H3, Label, Input, Item , Form, Textarea} from 'native-base';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
@@ -55,6 +55,18 @@ class PersonalDetail extends Component {
     this.props.navigation.navigate('SubjectModal');
   }
 
+  showDeleteAlert(subject) {
+    Alert.alert(
+      'Delete Subject',
+      `Remove ${subject.title}?`,
+      [
+        {text: 'OK', onPress: () => this.deleteSubject(subject.id)},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      ],
+      { cancelable: false }
+    )
+  }
+
   deleteSubject(subjectId) {
     console.log('delete subject: ', subjectId);
     this.props.deleteSubject(subjectId);
@@ -62,13 +74,16 @@ class PersonalDetail extends Component {
 
   render() {
     let subjects = this.props.subjectsObj.map(subject => (
-      <View key={subject.id}>
-        <Text>{subject.title}</Text>
-        <TouchableOpacity onPress={() => this.deleteSubject(subject.id)}>
-          <Text>
-            X
-          </Text>
+      <View key={subject.id} style={styles.subjectBtn}>
+        <TouchableOpacity onPress={() => this.showDeleteAlert(subject)}>
+          <Material 
+            name="close"
+            backgroundColor="transparent"
+            size={15}
+            color="white" 
+          />
         </TouchableOpacity>
+        <Text style={[commonStyles.fontLato, {color: "white"}]}>{' ' + subject.title}</Text>
       </View>
     ));
 
@@ -126,7 +141,7 @@ class PersonalDetail extends Component {
 
           <Form style={[styles.formWrapper]}>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
-              <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3'}]}>First Name</Label>
+              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>First Name</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -135,7 +150,7 @@ class PersonalDetail extends Component {
               />
             </Item>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
-              <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3'}]}>Last Name</Label>
+              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>Last Name</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -147,7 +162,7 @@ class PersonalDetail extends Component {
 
           <Form style={styles.inputWrapper}>
             <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3'}]}>Location</Label>
+              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>Location</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -158,8 +173,8 @@ class PersonalDetail extends Component {
           </Form>
 
           <Form style={styles.inputWrapper}>
-            <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Subjects</Label>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Subjects</Label>
+            <View style={{flexDirection: 'row', marginTop: 10, flexWrap: 'wrap'}}>
               {subjects}
               <TouchableOpacity style={styles.addSubject} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
                 <Text style={[styles.subjectText, commonStyles.fontLato]}>
@@ -170,7 +185,7 @@ class PersonalDetail extends Component {
           </Form>
 
           <Form style={styles.inputWrapper}>
-            <Label style={[commonStyles.fontLato, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Profile Summary</Label>
+            <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Profile Summary</Label>
             <Textarea 
               rowSpan={5}
               bordered
