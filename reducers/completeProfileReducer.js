@@ -4,6 +4,7 @@ import * as t from '../actions/types';
 const initialState = {
   subjects: [],
   workExperience: [],
+  education: [],
 };
 
 const completeProfileReducer = (state = initialState, action) => {
@@ -30,6 +31,24 @@ const completeProfileReducer = (state = initialState, action) => {
             company: action.data.company,
             industry: action.data.industry,
             role: action.data.role,
+            startmonth: action.data.startmonth,
+            startyear: action.data.startyear,
+            endmonth: action.data.endmonth,
+            endyear: action.data.endyear,
+          }
+        ]
+      };
+    
+    case t.ADD_EDUCATION:
+      return {
+        ...state,
+        education: [
+          ...state.education,
+          {
+            id: action.id,
+            university: action.data.university,
+            degree: action.data.degree,
+            major: action.data.major,
             startmonth: action.data.startmonth,
             startyear: action.data.startyear,
             endmonth: action.data.endmonth,

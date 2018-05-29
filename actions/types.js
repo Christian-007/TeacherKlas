@@ -9,3 +9,4 @@ export const LOGGED_OUT = 'LOGGED_OUT';
 export const ADD_SUBJECT = 'ADD_SUBJECT';
 export const DELETE_SUBJECT = 'DELETE_SUBJECT';
 export const ADD_WORK = 'ADD_WORK';
+export const ADD_EDUCATION = 'ADD_EDUCATION';

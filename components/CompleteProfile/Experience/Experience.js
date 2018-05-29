@@ -38,21 +38,19 @@ class Experience extends Component {
       modalVisible: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
-    this.onAddSubject = this.onAddSubject.bind(this);
+    this.onAddExperience = this.onAddExperience.bind(this);
     this.deleteSubject = this.deleteSubject.bind(this);
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   onSubmit() {
 
   }
 
-  onAddSubject() {
-    // this.setModalVisible(true);
-    this.props.navigation.navigate('WorkingModal');
+  onAddExperience(type, title) {
+    this.props.navigation.navigate('WorkingModal', {
+      expType: type,
+      screen: title
+    });
   }
 
   showDeleteAlert(subject) {
@@ -102,28 +100,37 @@ class Experience extends Component {
       </View>
     ));
 
+    let educations = this.props.profileObj.education.map(education => (
+      <View key={education.id} style={[styles.cardExperience]}>
+        <View style={{flex: 1}}>
+          <Material 
+            name="school"
+            backgroundColor="transparent"
+            size={20}
+            color="#00b16e" 
+            style={{alignSelf: 'center'}}
+          />
+        </View>
+        <View style={{flexWrap: 'wrap', flex: 3}}>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.university} ({education.startmonth} {education.startyear} - {education.endmonth} {education.endyear})</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.degree} of {education.major} </Text>
+        </View>
+        <View style={{flex: 1,}}>
+          <TouchableOpacity>
+            <Material 
+              name="close"
+              backgroundColor="transparent"
+              size={20}
+              color="#f2453d" 
+              style={{alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    ));
+
     return (
       <View style={styles.container}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert('Modal has been closed.');
-          }}>
-          <View style={{marginTop: 22}}>
-            <View>
-              <Text>Hello World!</Text>
-
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
         <ScrollView>
           <View style={styles.centerTitle}>
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
@@ -156,21 +163,22 @@ class Experience extends Component {
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>WORKING EXPERIENCE</Label>
-            <TouchableOpacity style={styles.addWorkBtn} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddExperience('work', 'WORKING EXPERIENCE')} disabled={this.state.disableSubmit}>
               <Text style={[commonStyles.boldText, styles.workText]}>
                 + Add Working Experience
               </Text>
             </TouchableOpacity>
-            {works}
+            { works }
           </Form>
 
           <Form style={styles.inputWrapper}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>EDUCATION</Label>
-            <TouchableOpacity style={styles.addWorkBtn} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddExperience('education', 'EDUCATION')} disabled={this.state.disableSubmit}>
               <Text style={[commonStyles.boldText, styles.workText]}>
                 + Add Education
               </Text>
             </TouchableOpacity>
+            { educations }
           </Form>
 
         </ScrollView>

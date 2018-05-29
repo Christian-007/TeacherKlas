@@ -126,6 +126,12 @@ export function addWorkExperience(data) {
   };
 }
 
+export function addEducationExperience(data) {
+  return (dispatch) => {
+    dispatch(addEducation(data));
+  };
+}
+
 // Actions Creators
 const checkingStatus = () => {
   return {
@@ -154,6 +160,15 @@ const addWork = (data) => {
   return {
     type: t.ADD_WORK,
     id: nextWork++,
+    data
+  }
+}
+
+let nextEducation = 0;
+const addEducation = (data) => {
+  return {
+    type: t.ADD_EDUCATION,
+    id: nextEducation++,
     data
   }
 }
