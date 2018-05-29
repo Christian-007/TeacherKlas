@@ -120,6 +120,12 @@ export function deleteSubject(subjectId) {
   });
 }
 
+export function addWorkExperience(data) {
+  return (dispatch) => {
+    dispatch(addWork(data));
+  };
+}
+
 // Actions Creators
 const checkingStatus = () => {
   return {
@@ -140,6 +146,15 @@ const deleteSubject = (subjectId) => {
   return {
     type: t.DELETE_SUBJECT,
     id: subjectId
+  }
+}
+
+let nextWork = 0;
+const addWork = (data) => {
+  return {
+    type: t.ADD_WORK,
+    id: nextWork++,
+    data
   }
 }
 

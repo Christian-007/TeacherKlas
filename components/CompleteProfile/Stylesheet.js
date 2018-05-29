@@ -84,12 +84,44 @@ export default ScaledSheet.create({
 
   // ADD SUBJECT STYLE
   subjectBtn: {
-    backgroundColor: '#00b16e',
+    borderWidth: 1,
+    borderColor: '#00b16e',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10,
     borderRadius: 20,
     marginRight: 5, marginBottom: 5,
+  },
+
+  // Experience.js STYLING
+  labelForm: {
+    letterSpacing: 2,
+    color: '#b3b3b3',
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  addWorkBtn: {
+    borderWidth: 1,
+    borderColor: '#d3d3d3',
+    backgroundColor: '#fafafa',
+    width: '100%',
+    alignItems: 'center',
+    paddingTop: 20, paddingBottom: 20,
+    borderRadius: 4,
+    borderStyle: 'dashed',
+  },
+  workText: {
+    letterSpacing: 1,
+    color: '#d3d3d3',
+  },
+  cardExperience: {
+    marginTop: 10,
+    flex: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#00b16e',
+    paddingTop: 15, paddingBottom: 15,
   }
 });

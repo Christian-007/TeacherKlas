@@ -8,3 +8,4 @@ export const LOGGED_OUT = 'LOGGED_OUT';
 // COMPLETE PROFILE TYPES
 export const ADD_SUBJECT = 'ADD_SUBJECT';
 export const DELETE_SUBJECT = 'DELETE_SUBJECT';
+export const ADD_WORK = 'ADD_WORK';

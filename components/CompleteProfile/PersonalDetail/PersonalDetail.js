@@ -3,7 +3,7 @@ import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, Tou
 import { H3, Label, Input, Item , Form, Textarea} from 'native-base';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
-import styles from './Stylesheet';
+import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { scale } from 'react-native-size-matters';
 import SubjectModal from './SubjectModal';
@@ -47,7 +47,7 @@ class PersonalDetail extends Component {
   }
 
   onSubmit() {
-
+    this.props.navigation.navigate('Experience');
   }
 
   onAddSubject() {
@@ -73,17 +73,17 @@ class PersonalDetail extends Component {
   }
 
   render() {
-    let subjects = this.props.subjectsObj.map(subject => (
+    let subjects = this.props.subjectsObj.subjects.map(subject => (
       <View key={subject.id} style={styles.subjectBtn}>
         <TouchableOpacity onPress={() => this.showDeleteAlert(subject)}>
           <Material 
             name="close"
             backgroundColor="transparent"
             size={15}
-            color="white" 
+            color="#00b16e" 
           />
         </TouchableOpacity>
-        <Text style={[commonStyles.fontLato, {color: "white"}]}>{' ' + subject.title}</Text>
+        <Text style={[commonStyles.fontLato, {color: "#00b16e"}]}>{' ' + subject.title}</Text>
       </View>
     ));
 
@@ -121,7 +121,7 @@ class PersonalDetail extends Component {
               </View>
               <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>PERSONAL</Text>
             </View>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, marginLeft: scale(50), marginRight: scale(50), zIndex: 2}}>
+            <View style={{alignItems: 'center', justifyContent:'center', width: 60, marginLeft: 50, marginRight: 50, zIndex: 2}}>
               <View style={{backgroundColor: 'white'}}>
                 <Ionic name="ios-checkmark-circle-outline" size={25} color={'#cdccd8'} />
               </View>
@@ -133,7 +133,7 @@ class PersonalDetail extends Component {
               </View>
               <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>SCHEDULE</Text>
             </View>
-            <View style={{position: 'absolute', left:85, top:12, zIndex: 0, flexDirection:'row', }}>
+            <View style={{position: 'absolute', left:90, top:12, zIndex: 0, flexDirection:'row', }}>
               <View style={[styles.hr, {backgroundColor: '#cdccd8'}]}></View>
               <View style={[styles.hr, {marginLeft: 15}]}></View>
             </View>
@@ -141,7 +141,7 @@ class PersonalDetail extends Component {
 
           <Form style={[styles.formWrapper]}>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
-              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>First Name</Label>
+              <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>FIRST NAME</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -150,7 +150,7 @@ class PersonalDetail extends Component {
               />
             </Item>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
-              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>Last Name</Label>
+              <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>LAST NAME</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -162,7 +162,7 @@ class PersonalDetail extends Component {
 
           <Form style={styles.inputWrapper}>
             <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3'}]}>Location</Label>
+              <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>LOCATION</Label>
               <Input 
                 style={[commonStyles.fontLato, {fontSize: 13}]}
                 underlineColorAndroid='transparent'
@@ -173,7 +173,7 @@ class PersonalDetail extends Component {
           </Form>
 
           <Form style={styles.inputWrapper}>
-            <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Subjects</Label>
+            <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>SUBJECTS</Label>
             <View style={{flexDirection: 'row', marginTop: 10, flexWrap: 'wrap'}}>
               {subjects}
               <TouchableOpacity style={styles.addSubject} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
@@ -185,7 +185,7 @@ class PersonalDetail extends Component {
           </Form>
 
           <Form style={styles.inputWrapper}>
-            <Label style={[commonStyles.boldText, {letterSpacing: 2, color: '#b3b3b3', fontSize: 15}]}>Profile Summary</Label>
+            <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>PROFILE SUMMARY</Label>
             <Textarea 
               rowSpan={5}
               bordered
@@ -198,9 +198,17 @@ class PersonalDetail extends Component {
         </ScrollView>
         <View style={[styles.submitWrapper]}>
           <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <Text style={[commonStyles.boldText, styles.submitText]}>
-              SUBMIT
-            </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={[commonStyles.boldText, styles.submitText]}>
+                NEXT {' '}
+              </Text>
+              <Material 
+                name="arrow-forward"
+                backgroundColor="transparent"
+                size={20}
+                color="white" 
+              />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -209,7 +217,7 @@ class PersonalDetail extends Component {
 }
 
 PersonalDetail.propTypes = {
-  subjectsObj: PropTypes.array.isRequired
+  subjectsObj: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({

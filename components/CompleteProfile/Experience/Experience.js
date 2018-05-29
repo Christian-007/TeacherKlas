@@ -1,0 +1,205 @@
+import React, { Component } from 'react';
+import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
+import { H3, Label, Input, Item , Form, Textarea} from 'native-base';
+import Ionic from 'react-native-vector-icons/Ionicons';
+import Material from 'react-native-vector-icons/MaterialIcons';
+import styles from '../Stylesheet';
+import commonStyles from '../../../common/CommonStyleSheet';
+import { scale } from 'react-native-size-matters';
+import WorkingModal from './WorkingModal';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { deleteSubject } from '../../../actions';
+
+class Experience extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate("SignedIn")}
+          title="SKIP"
+        />
+      ),
+    }
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = { 
+      fname: '',
+      lname: '',
+      location: '',
+      subjects: '',
+      summary: '',
+      lname: '',
+      errors: {},
+      disableSubmit: false,
+      loading: false,
+      modalVisible: false,
+    };
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onAddSubject = this.onAddSubject.bind(this);
+    this.deleteSubject = this.deleteSubject.bind(this);
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  onSubmit() {
+
+  }
+
+  onAddSubject() {
+    // this.setModalVisible(true);
+    this.props.navigation.navigate('WorkingModal');
+  }
+
+  showDeleteAlert(subject) {
+    Alert.alert(
+      'Delete Subject',
+      `Remove ${subject.title}?`,
+      [
+        {text: 'OK', onPress: () => this.deleteSubject(subject.id)},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  deleteSubject(subjectId) {
+    console.log('delete subject: ', subjectId);
+    this.props.deleteSubject(subjectId);
+  }
+
+  render() {
+    let works = this.props.profileObj.workExperience.map(work => (
+      <View key={work.id} style={[styles.cardExperience]}>
+        <View style={{flex: 1}}>
+          <Material 
+            name="work"
+            backgroundColor="transparent"
+            size={20}
+            color="#00b16e" 
+            style={{alignSelf: 'center'}}
+          />
+        </View>
+        <View style={{flexWrap: 'wrap', flex: 3}}>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{work.role} at {work.company} </Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({work.startmonth} {work.startyear} - {work.endmonth} {work.endyear})</Text>
+        </View>
+        <View style={{flex: 1,}}>
+          <TouchableOpacity>
+            <Material 
+              name="close"
+              backgroundColor="transparent"
+              size={20}
+              color="#f2453d" 
+              style={{alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    ));
+
+    return (
+      <View style={styles.container}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            alert('Modal has been closed.');
+          }}>
+          <View style={{marginTop: 22}}>
+            <View>
+              <Text>Hello World!</Text>
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+        <ScrollView>
+          <View style={styles.centerTitle}>
+            <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
+          </View>
+          
+          <View style={styles.journey}>
+            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
+              <View style={{backgroundColor: 'white'}}>
+                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#00b16e'} />
+              </View>
+              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>PERSONAL</Text>
+            </View>
+            <View style={{alignItems: 'center', justifyContent:'center', width: 60, marginLeft: 50, marginRight: 50, zIndex: 2}}>
+              <View style={{backgroundColor: 'white'}}>
+                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#00b16e'} />
+              </View>
+              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>EXPERIENCE</Text>
+            </View>
+            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
+              <View style={{backgroundColor: 'white'}}>
+                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#cdccd8'} />
+              </View>
+              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>SCHEDULE</Text>
+            </View>
+            <View style={{position: 'absolute', left:90, top:12, zIndex: 0, flexDirection:'row', }}>
+              <View style={[styles.hr, {backgroundColor: '#00b16e'}]}></View>
+              <View style={[styles.hr, {marginLeft: 15, backgroundColor: '#cdccd8'}]}></View>
+            </View>
+          </View>
+
+          <Form style={[styles.inputWrapper, {marginTop: 30}]}>
+            <Label style={[commonStyles.formLabel, styles.labelForm]}>WORKING EXPERIENCE</Label>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
+              <Text style={[commonStyles.boldText, styles.workText]}>
+                + Add Working Experience
+              </Text>
+            </TouchableOpacity>
+            {works}
+          </Form>
+
+          <Form style={styles.inputWrapper}>
+            <Label style={[commonStyles.formLabel, styles.labelForm]}>EDUCATION</Label>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={this.onAddSubject} disabled={this.state.disableSubmit}>
+              <Text style={[commonStyles.boldText, styles.workText]}>
+                + Add Education
+              </Text>
+            </TouchableOpacity>
+          </Form>
+
+        </ScrollView>
+        <View style={[styles.submitWrapper]}>
+          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={[commonStyles.boldText, styles.submitText]}>
+                NEXT {' '}
+              </Text>
+              <Material 
+                name="arrow-forward"
+                backgroundColor="transparent"
+                size={20}
+                color="white"
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+}
+
+Experience.propTypes = {
+  profileObj: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  profileObj: state.completeProfileReducer
+});
+
+export default connect(mapStateToProps, { deleteSubject })(Experience);

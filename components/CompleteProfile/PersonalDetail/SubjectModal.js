@@ -60,7 +60,7 @@ class SubjectModal extends Component {
 }
 
 SubjectModal.propTypes = {
-  subjectsObj: PropTypes.array.isRequired,
+  subjectsObj: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

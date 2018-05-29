@@ -14,7 +14,9 @@ import HomePage from './components/HomePage/HomePage';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 
 import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
+import ExperiencePage from './components/CompleteProfile/Experience/Experience';
 import SubjectModal from './components/CompleteProfile/PersonalDetail/SubjectModal';
+import WorkingModal from './components/CompleteProfile/Experience/WorkingModal';
 
 const headerStyling = {
   backgroundColor: '#fff',
@@ -69,22 +71,28 @@ export const SignedOut = createStackNavigator({
 });
 
 /* --- Complete Profile Navigations ---- */
-const CompleteProfile = createStackNavigator({
-  PersonalDetail: {
-    screen: PersonalDetailPage,
-    navigationOptions: {
-      headerStyle: headerStyling,
-      headerTitleStyle: headerTitleStyling
-    }
+const CompleteProfile = createStackNavigator(
+  {
+    PersonalDetail: {
+      screen: PersonalDetailPage,
+    },
+    SubjectModal: {
+      screen: SubjectModal,
+    },
+    Experience: {
+      screen: ExperiencePage,
+    },
+    WorkingModal: {
+      screen: WorkingModal,
+    },
   },
-  SubjectModal: {
-    screen: SubjectModal,
+  {
     navigationOptions: {
       headerStyle: headerStyling,
       headerTitleStyle: headerTitleStyling
     }
   }
-});
+);
 
 /* --- Signed in Navigations ---- */
 const HomeStack = createStackNavigator({

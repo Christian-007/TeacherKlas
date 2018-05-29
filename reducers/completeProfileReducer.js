@@ -1,20 +1,49 @@
 import { AsyncStorage } from 'react-native';
 import * as t from '../actions/types';
 
-const completeProfileReducer = (state = [], action) => {
+const initialState = {
+  subjects: [],
+  workExperience: [],
+};
+
+const completeProfileReducer = (state = initialState, action) => {
   switch (action.type) {
     case t.ADD_SUBJECT:
-      return [
+      return {
         ...state,
-        {
-          id: action.id,
-          title: action.data
-        }
-      ];
+        subjects: [
+          ...state.subjects,
+          {
+            id: action.id,
+            title: action.data
+          }
+        ]
+      };
+
+    case t.ADD_WORK:
+      return {
+        ...state,
+        workExperience: [
+          ...state.workExperience,
+          {
+            id: action.id,
+            company: action.data.company,
+            industry: action.data.industry,
+            role: action.data.role,
+            startmonth: action.data.startmonth,
+            startyear: action.data.startyear,
+            endmonth: action.data.endmonth,
+            endyear: action.data.endyear,
+          }
+        ]
+      };
     
     case t.DELETE_SUBJECT:
       const subjectId = action.id;
-      return state.filter(subject => subject.id !== subjectId);
+      return {
+        ...state,
+        subjects: state.subjects.filter(subject => subject.id !== subjectId)
+      };
       
     default:
       return state;
