@@ -29,7 +29,7 @@ class AppContainer extends Component {
     }
 
     const Layout = createRootNavigator(signedIn);
-    return <Layout persistenceKey={'NavigationKey'} renderLoadingExperimental={() => <ActivityIndicator />}/>;
+    return <Layout />;
 
     // if (signedIn) {
     //   return <SignedIn />;

@@ -6,7 +6,6 @@ import Material from 'react-native-vector-icons/MaterialIcons';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { scale } from 'react-native-size-matters';
-import WorkingModal from './WorkingModal';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../actions';
@@ -47,7 +46,7 @@ class Experience extends Component {
   }
 
   onAddExperience(type, title) {
-    this.props.navigation.navigate('WorkingModal', {
+    this.props.navigation.navigate('ExperienceModal', {
       expType: type,
       screen: title
     });

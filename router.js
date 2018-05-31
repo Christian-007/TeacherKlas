@@ -16,7 +16,7 @@ import ProfilePage from './components/ProfilePage/ProfilePage';
 import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
 import ExperiencePage from './components/CompleteProfile/Experience/Experience';
 import SubjectModal from './components/CompleteProfile/PersonalDetail/SubjectModal';
-import WorkingModal from './components/CompleteProfile/Experience/WorkingModal';
+import ExperienceModal from './components/CompleteProfile/Experience/ExperienceModal';
 
 const headerStyling = {
   backgroundColor: '#fff',
@@ -82,8 +82,8 @@ const CompleteProfile = createStackNavigator(
     Experience: {
       screen: ExperiencePage,
     },
-    WorkingModal: {
-      screen: WorkingModal,
+    ExperienceModal: {
+      screen: ExperienceModal,
     },
   },
   {
