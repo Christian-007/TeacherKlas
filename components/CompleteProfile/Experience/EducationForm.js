@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { addEducationExperience } from '../../../actions';
+import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
+import RoundedSubmitButton from '../../../common/RoundedSubmitButton';
 
 class EducationForm extends Component {
   constructor(props) {
@@ -46,33 +48,21 @@ class EducationForm extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: '#fff'}}>
         <ScrollView>
-        <Form style={[styles.inputWrapper]}>
-          <Item stackedLabel style={{marginLeft: 0}}>
-            <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHOOL / UNIVERSITY</Label>
-            <Input 
-              style={[commonStyles.fontLato, {fontSize: 13}]}
-              underlineColorAndroid='transparent'
-              onChangeText={(university) => this.onValueChangeEducation('university', university)}
-              value={this.state.education.university}
-              placeholder="Name of school / university"
-              placeholderTextColor="#b3b3b3"
-            />
-          </Item>
-        </Form>
+        <TextFieldWithLabel 
+          onChangeText={(university) => this.onValueChangeEducation('university', university)}
+          value={this.state.education.university}
+          placeholder="Name of school / university"
+          label="SCHOOL / UNIVERSITY"
+          formStyles={styles.inputWrapper}
+        />
 
-        <Form style={[styles.inputWrapper]}>
-          <Item stackedLabel style={{marginLeft: 0}}>
-            <Label style={[commonStyles.formLabel, styles.labelForm]}>MAJOR</Label>
-            <Input 
-              style={[commonStyles.fontLato, {fontSize: 13}]}
-              underlineColorAndroid='transparent'
-              onChangeText={(major) => this.onValueChangeEducation('major', major)}
-              value={this.state.education.major}
-              placeholder="e.g. Computer Science, Accounting, Business"
-              placeholderTextColor="#b3b3b3"
-            />
-          </Item>
-        </Form>
+        <TextFieldWithLabel 
+          onChangeText={(major) => this.onValueChangeEducation('major', major)}
+          value={this.state.education.major}
+          label="MAJOR"
+          formStyles={styles.inputWrapper}
+        />
+
         <Form style={[styles.inputWrapper]}>
           <Label style={[commonStyles.formLabel, styles.labelForm]}>DEGREE</Label>
           <Picker
@@ -137,11 +127,10 @@ class EducationForm extends Component {
         </Form> 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
-          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <Text style={[commonStyles.boldText, styles.submitText]}>
-              CONFIRM
-            </Text>
-          </TouchableOpacity>
+          <RoundedSubmitButton 
+            label="CONFIRM"
+            onPress={this.onSubmit}
+          />
         </View>
       </View>
     )

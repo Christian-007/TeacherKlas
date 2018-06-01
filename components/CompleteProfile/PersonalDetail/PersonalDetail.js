@@ -10,6 +10,8 @@ import SubjectModal from './SubjectModal';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../actions';
+import UserJourney from '../../../common/UserJourney';
+import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -114,30 +116,11 @@ class PersonalDetail extends Component {
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
           </View>
           
-          <View style={styles.journey}>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#00b16e'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>PERSONAL</Text>
-            </View>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, marginLeft: 50, marginRight: 50, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#cdccd8'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>EXPERIENCE</Text>
-            </View>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#cdccd8'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>SCHEDULE</Text>
-            </View>
-            <View style={{position: 'absolute', left:90, top:12, zIndex: 0, flexDirection:'row', }}>
-              <View style={[styles.hr, {backgroundColor: '#cdccd8'}]}></View>
-              <View style={[styles.hr, {marginLeft: 15}]}></View>
-            </View>
-          </View>
+          <UserJourney 
+            stage1='#00b16e'
+            stage2='#cdccd8'
+            stage3='#cdccd8'
+          />
 
           <Form style={[styles.formWrapper]}>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
@@ -160,17 +143,13 @@ class PersonalDetail extends Component {
             </Item>
           </Form>
 
-          <Form style={styles.inputWrapper}>
-            <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>LOCATION</Label>
-              <Input 
-                style={[commonStyles.fontLato, {fontSize: 13}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(location) => this.setState({location})}
-                value={this.state.location}
-              />
-            </Item>
-          </Form>
+          <TextFieldWithLabel 
+            onChangeText={(location) => this.setState({location})}
+            value={this.state.location}
+            placeholder=""
+            label="LOCATION"
+            formStyles={styles.inputWrapper}
+          />
 
           <Form style={styles.inputWrapper}>
             <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>SUBJECTS</Label>

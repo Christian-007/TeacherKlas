@@ -9,6 +9,7 @@ import { scale } from 'react-native-size-matters';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../actions';
+import UserJourney from '../../../common/UserJourney';
 
 class Experience extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -135,30 +136,11 @@ class Experience extends Component {
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
           </View>
           
-          <View style={styles.journey}>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#00b16e'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>PERSONAL</Text>
-            </View>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, marginLeft: 50, marginRight: 50, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#00b16e'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#00b16e', marginTop: 5, letterSpacing: 1}]}>EXPERIENCE</Text>
-            </View>
-            <View style={{alignItems: 'center', justifyContent:'center', width: 60, zIndex: 2}}>
-              <View style={{backgroundColor: 'white'}}>
-                <Ionic name="ios-checkmark-circle-outline" size={25} color={'#cdccd8'} />
-              </View>
-              <Text style={[commonStyles.boldText, {fontSize: 8, color: '#cdccd8', marginTop: 5, letterSpacing: 1}]}>SCHEDULE</Text>
-            </View>
-            <View style={{position: 'absolute', left:90, top:12, zIndex: 0, flexDirection:'row', }}>
-              <View style={[styles.hr, {backgroundColor: '#00b16e'}]}></View>
-              <View style={[styles.hr, {marginLeft: 15, backgroundColor: '#cdccd8'}]}></View>
-            </View>
-          </View>
+          <UserJourney 
+            stage1='#00b16e'
+            stage2='#00b16e'
+            stage3='#cdccd8'
+          />
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>WORKING EXPERIENCE</Label>

@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { addWorkExperience } from '../../../actions';
+import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
+import RoundedSubmitButton from '../../../common/RoundedSubmitButton';
 
 class WorkForm extends Component {
   constructor(props) {
@@ -46,45 +48,27 @@ class WorkForm extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: '#fff'}}>
         <ScrollView>
-          <Form style={[styles.inputWrapper]}>
-            <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.formLabel, styles.labelForm]}>COMPANY</Label>
-              <Input 
-                style={[commonStyles.fontLato, {fontSize: 13}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(company) => this.onValueChangeWork('company', company)}
-                value={this.state.work.company}
-                placeholder="Name of company"
-                placeholderTextColor="#b3b3b3"
-              />
-            </Item>
-          </Form>
-          <Form style={[styles.inputWrapper]}>
-            <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.formLabel, styles.labelForm]}>INDUSTRY</Label>
-              <Input 
-                style={[commonStyles.fontLato, {fontSize: 13}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(industry) => this.onValueChangeWork('industry', industry)}
-                value={this.state.work.industry}
-                placeholder="e.g. IT, Engineering, Finance"
-                placeholderTextColor="#b3b3b3"
-              />
-            </Item>
-          </Form>
-          <Form style={[styles.inputWrapper]}>
-            <Item stackedLabel style={{marginLeft: 0}}>
-              <Label style={[commonStyles.formLabel, styles.labelForm]}>ROLE / JOB POSITION</Label>
-              <Input 
-                style={[commonStyles.fontLato, {fontSize: 13}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(role) => this.onValueChangeWork('role', role)}
-                value={this.state.work.role}
-                placeholder="e.g. Junior Developer, Office Manager"
-                placeholderTextColor="#b3b3b3"
-              />
-            </Item>
-          </Form>
+          <TextFieldWithLabel 
+            onChangeText={(company) => this.onValueChangeWork('company', company)}
+            value={this.state.work.company}
+            placeholder="Name of company"
+            label="COMPANY"
+            formStyles={styles.inputWrapper}
+          />
+          <TextFieldWithLabel 
+            onChangeText={(industry) => this.onValueChangeWork('industry', industry)}
+            value={this.state.work.industry}
+            placeholder="e.g. IT, Engineering, Finance"
+            label="INDUSTRY"
+            formStyles={styles.inputWrapper}
+          />
+          <TextFieldWithLabel 
+            onChangeText={(role) => this.onValueChangeWork('role', role)}
+            value={this.state.work.role}
+            placeholder="e.g. Junior Developer, Office Manager"
+            label="ROLE / JOB POSITION"
+            formStyles={styles.inputWrapper}
+          />
 
           <Form style={[styles.inputWrapper, {flexDirection: 'row', width: '100%', justifyContent: 'space-between'}]}>
             <Item stackedLabel style={{marginLeft: 0, borderWidth: 0, borderColor: '#fff', width: '45%'}}>
@@ -132,11 +116,10 @@ class WorkForm extends Component {
           </Form>
         </ScrollView>
         <View style={[styles.submitWrapper]}>
-          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <Text style={[commonStyles.boldText, styles.submitText]}>
-              CONFIRM
-            </Text>
-          </TouchableOpacity>
+          <RoundedSubmitButton 
+            label="CONFIRM"
+            onPress={this.onSubmit}
+          />
         </View>
       </View>
     )
