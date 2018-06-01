@@ -123,5 +123,12 @@ export default ScaledSheet.create({
     borderWidth: 1,
     borderColor: '#00b16e',
     paddingTop: 15, paddingBottom: 15,
+  },
+
+  // CreateSchedule STYLING
+  bigLabel: {
+    fontSize: 20,
+    color: '#828282',
+    letterSpacing: 1,
   }
 });

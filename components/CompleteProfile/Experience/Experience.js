@@ -43,7 +43,7 @@ class Experience extends Component {
   }
 
   onSubmit() {
-
+    this.props.navigation.navigate('CreateSchedule');
   }
 
   onAddExperience(type, title) {

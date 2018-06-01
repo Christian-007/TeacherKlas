@@ -15,6 +15,7 @@ import ProfilePage from './components/ProfilePage/ProfilePage';
 
 import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
 import ExperiencePage from './components/CompleteProfile/Experience/Experience';
+import CreateSchedulePage from './components/CompleteProfile/CreateSchedule/CreateSchedule';
 import SubjectModal from './components/CompleteProfile/PersonalDetail/SubjectModal';
 import ExperienceModal from './components/CompleteProfile/Experience/ExperienceModal';
 
@@ -84,6 +85,9 @@ const CompleteProfile = createStackNavigator(
     },
     ExperienceModal: {
       screen: ExperienceModal,
+    },
+    CreateSchedule: {
+      screen: CreateSchedulePage,
     },
   },
   {
