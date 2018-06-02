@@ -1,4 +1,6 @@
 import * as t from './types';
+import * as api from '../config/api';
+import { auth, database } from "../config/firebase";
 import { AsyncStorage } from 'react-native';
 
 export function createSchedule(data) {
@@ -19,6 +21,31 @@ export function removeSchedule(scheduleId) {
     dispatch(deleteSchedule(scheduleId));
   };
 }
+
+export function submitProfile(data) {
+  return (dispatch) => Promise.all([
+    promiseProfile(data.workExperience, 'teacherExperience'),
+    promiseProfile(data.schedules, 'teacherSchedules'),
+    promiseProfile(data.education, 'teacherEducations'),
+    promiseProfile(data.subjects, 'teacherSubjects'),
+  ]).then((responses) => {
+    console.log('responses: ', responses);
+  });
+}
+
+const promiseProfile = (dataRef, dbChildRef) => {
+  return new Promise((resolve, reject) => {
+    dataRef.map(datum => {
+      database.ref().child(dbChildRef).push(datum, function(error) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(true);
+        }
+      });
+    })
+  });
+};
 
 let nextSchedule = 0;
 const addSchedule = (schedule) => {

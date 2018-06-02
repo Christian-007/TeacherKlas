@@ -10,8 +10,10 @@ import { scale } from 'react-native-size-matters';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../actions';
+import { submitProfile } from '../../../actions/scheduleProfile';
 import UserJourney from '../../../common/UserJourney';
 import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
+import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import ScheduleModal from './ScheduleModal';
 import ScheduleTable from './ScheduleTable';
 
@@ -47,7 +49,8 @@ class CreateSchedule extends Component {
   }
 
   onSubmit() {
-    this.props.navigation.navigate('Experience');
+    console.log('User data: ', this.props.profileObj);
+    this.props.submitProfile(this.props.profileObj);
   }
 
   onAddSchedule = (title) => {
@@ -133,19 +136,11 @@ class CreateSchedule extends Component {
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
-          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={[commonStyles.boldText, styles.submitText]}>
-                NEXT {' '}
-              </Text>
-              <Material 
-                name="arrow-forward"
-                backgroundColor="transparent"
-                size={20}
-                color="white" 
-              />
-            </View>
-          </TouchableOpacity>
+          <SubmitBtnWithIcon 
+            label="SUBMIT"
+            onPress={this.onSubmit}
+            disabled={this.state.disableSubmit}
+          />
         </View>
       </View>
     )
@@ -153,11 +148,11 @@ class CreateSchedule extends Component {
 }
 
 CreateSchedule.propTypes = {
-  subjectsObj: PropTypes.object.isRequired
+  profileObj: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  subjectsObj: state.completeProfileReducer
+  profileObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, { deleteSubject })(CreateSchedule);
+export default connect(mapStateToProps, { deleteSubject, submitProfile })(CreateSchedule);

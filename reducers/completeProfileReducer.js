@@ -2,10 +2,42 @@ import { AsyncStorage } from 'react-native';
 import * as t from '../actions/types';
 
 const initialState = {
-  subjects: [],
-  workExperience: [],
-  education: [],
-  schedules: [],
+  subjects: [
+    {
+      id: 0,
+      title: "English"
+    },
+    {
+      id: 1,
+      title: "Math"
+    }
+  ],
+  workExperience: [{
+    id: 0,
+    company: "Company",
+    industry: "Industry",
+    role: "Role",
+    startmonth: "02",
+    startyear: "2012",
+    endmonth: "02",
+    endyear: "2014"
+  }],
+  education: [{
+    id: 0,
+    university: "University of Kensington",
+    degree: "masters",
+    major: "Science and Engineering",
+    startmonth: "01",
+    startyear: "2012",
+    endmonth: "02",
+    endyear: "2014"
+  }],
+  schedules: [{
+    id: 0,
+    starttime: "09:00",
+    endtime: "16:00",
+    day: "Monday"
+  }],
 };
 
 const completeProfileReducer = (state = initialState, action) => {

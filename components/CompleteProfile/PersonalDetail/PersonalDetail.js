@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { deleteSubject } from '../../../actions';
 import UserJourney from '../../../common/UserJourney';
 import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
+import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -176,19 +177,11 @@ class PersonalDetail extends Component {
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
-          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={[commonStyles.boldText, styles.submitText]}>
-                NEXT {' '}
-              </Text>
-              <Material 
-                name="arrow-forward"
-                backgroundColor="transparent"
-                size={20}
-                color="white" 
-              />
-            </View>
-          </TouchableOpacity>
+          <SubmitBtnWithIcon 
+            label="NEXT"
+            onPress={this.onSubmit}
+            disabled={this.state.disableSubmit}
+          />
         </View>
       </View>
     )

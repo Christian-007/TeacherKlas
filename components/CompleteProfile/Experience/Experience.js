@@ -5,6 +5,7 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
+import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import { scale } from 'react-native-size-matters';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -164,19 +165,11 @@ class Experience extends Component {
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
-          <TouchableOpacity style={styles.submitBtn} onPress={this.onSubmit} disabled={this.state.disableSubmit}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[commonStyles.boldText, styles.submitText]}>
-                NEXT {' '}
-              </Text>
-              <Material 
-                name="arrow-forward"
-                backgroundColor="transparent"
-                size={20}
-                color="white"
-              />
-            </View>
-          </TouchableOpacity>
+          <SubmitBtnWithIcon 
+            label="NEXT"
+            onPress={this.onSubmit}
+            disabled={this.state.disableSubmit}
+          />
         </View>
       </View>
     )
