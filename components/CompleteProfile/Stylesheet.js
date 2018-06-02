@@ -130,5 +130,9 @@ export default ScaledSheet.create({
     fontSize: 20,
     color: '#828282',
     letterSpacing: 1,
+  },
+  textLabel: {
+    fontSize: 12,
+    paddingTop: 10, paddingBottom: 10,
   }
 });

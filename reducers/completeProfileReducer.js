@@ -5,6 +5,7 @@ const initialState = {
   subjects: [],
   workExperience: [],
   education: [],
+  schedule: [],
 };
 
 const completeProfileReducer = (state = initialState, action) => {
@@ -53,6 +54,20 @@ const completeProfileReducer = (state = initialState, action) => {
             startyear: action.data.startyear,
             endmonth: action.data.endmonth,
             endyear: action.data.endyear,
+          }
+        ]
+      };
+    
+    case t.ADD_SCHEDULE:
+      return {
+        ...state,
+        schedule: [
+          ...state.schedule,
+          {
+            id: action.id,
+            starttime: action.data.starttime,
+            endtime: action.data.endtime,
+            day: action.data.day,
           }
         ]
       };
