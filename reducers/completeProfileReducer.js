@@ -5,7 +5,7 @@ const initialState = {
   subjects: [],
   workExperience: [],
   education: [],
-  schedule: [],
+  schedules: [],
 };
 
 const completeProfileReducer = (state = initialState, action) => {
@@ -61,8 +61,8 @@ const completeProfileReducer = (state = initialState, action) => {
     case t.ADD_SCHEDULE:
       return {
         ...state,
-        schedule: [
-          ...state.schedule,
+        schedules: [
+          ...state.schedules,
           {
             id: action.id,
             starttime: action.data.starttime,
@@ -72,11 +72,36 @@ const completeProfileReducer = (state = initialState, action) => {
         ]
       };
     
+    case t.UPDATE_SCHEDULE:
+      return {
+        ...state,
+        schedules: state.schedules.map(schedule => {
+          if(schedule.id !== action.data.id) {
+            // This isn't the item we care about - keep it as-is
+            console.log('not the object:', schedule);
+            return schedule;
+          }
+          // Otherwise, this is the one we want - return an updated value
+          console.log('update object:', schedule);
+          return {
+            ...schedule,
+            ...action.data
+          };   
+        })
+      };
+    
     case t.DELETE_SUBJECT:
       const subjectId = action.id;
       return {
         ...state,
         subjects: state.subjects.filter(subject => subject.id !== subjectId)
+      };
+    
+    case t.DELETE_SCHEDULE:
+      const scheduleId = action.id;
+      return {
+        ...state,
+        schedules: state.schedules.filter(schedule => schedule.id !== scheduleId)
       };
       
     default:

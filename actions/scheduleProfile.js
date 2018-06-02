@@ -8,6 +8,12 @@ export function createSchedule(data) {
   };
 }
 
+export function adjustSchedule(schedule) {
+  return (dispatch) => {
+    dispatch(updateSchedule(schedule));
+  };
+}
+
 export function removeSchedule(scheduleId) {
   return (dispatch) => {
     dispatch(deleteSchedule(scheduleId));
@@ -20,6 +26,13 @@ const addSchedule = (schedule) => {
   return {
     type: t.ADD_SCHEDULE,
     id: nextSchedule++,
+    data: schedule
+  }
+}
+
+const updateSchedule = (schedule) => {
+  return {
+    type: t.UPDATE_SCHEDULE,
     data: schedule
   }
 }

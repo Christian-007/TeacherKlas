@@ -6,30 +6,25 @@ import commonStyles from '../../../common/CommonStyleSheet';
 import ScheduleForm from './ScheduleForm';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSchedule } from '../../../actions/scheduleProfile';
+import { createSchedule, adjustSchedule } from '../../../actions/scheduleProfile';
 
 class ScheduleModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      startDateTimePickerVisible: false,
-      endDateTimePickerVisible: false,
-      starttime: 'Start Time',
-      endtime: 'End Time',
-      day: 'Monday'
-    };
     this.handleChange = this.handleChange.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
   }
 
   handleChange(key, value) {
-    this.setState({
-      [key]: value
-    });
+    this.props.onChange(key,value);
   }
 
   onConfirm() {
-    this.props.createSchedule(this.state);
+    if(this.props.screenTitle === 'EDIT SCHEDULE') {
+      this.props.adjustSchedule(this.props.editSchedule);  
+    } else {
+      this.props.createSchedule(this.props.editSchedule);
+    }
     this.props.onHideModal();
   }
   
@@ -53,14 +48,14 @@ class ScheduleModal extends Component {
               />
             </TouchableOpacity>
           </View>
-          <Text style={modalStyle.titleStyle}>ADD SCHEDULE</Text>
+          <Text style={modalStyle.titleStyle}>{this.props.screenTitle}</Text>
           <View style={{flex: 1, flexDirection: 'row',justifyContent: 'flex-end',}}>
             <TouchableOpacity onPress={this.onConfirm}>
               <Text style={modalStyle.prev}>CONFIRM</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <ScheduleForm onChange={this.handleChange} currentState={this.state} />
+        <ScheduleForm onChange={this.handleChange} currentState={this.props.editSchedule} />
       </Modal>
     )
   }
@@ -100,4 +95,4 @@ const mapStateToProps = (state) => ({
   profileObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, { createSchedule })(ScheduleModal);
+export default connect(mapStateToProps, { createSchedule, adjustSchedule })(ScheduleModal);

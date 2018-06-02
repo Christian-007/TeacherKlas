@@ -13,6 +13,7 @@ import { deleteSubject } from '../../../actions';
 import UserJourney from '../../../common/UserJourney';
 import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
 import ScheduleModal from './ScheduleModal';
+import ScheduleTable from './ScheduleTable';
 
 class CreateSchedule extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -29,12 +30,8 @@ class CreateSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      fname: '',
-      lname: '',
-      location: '',
-      subjects: '',
-      summary: '',
-      lname: '',
+      schedule: {},
+      screen: '',
       errors: {},
       disableSubmit: false,
       loading: false,
@@ -53,8 +50,36 @@ class CreateSchedule extends Component {
     this.props.navigation.navigate('Experience');
   }
 
-  onAddSchedule() {
-    this.setState({modalVisible: true});
+  onAddSchedule = (title) => {
+    this.setState({
+      modalVisible: true,
+      screen: title,
+      schedule: {
+        startDateTimePickerVisible: false,
+        endDateTimePickerVisible: false,
+        starttime: 'Start Time',
+        endtime: 'End Time',
+        day: 'Monday'
+      }
+    });
+  }
+
+  onEditSchedule = (title, scheduleObj) => {
+    this.setState({
+      modalVisible: true,
+      screen: title,
+      schedule: scheduleObj
+    });
+  }
+
+  handleChange = (key, value) => {
+    this.setState(prevState => ({
+      ...prevState,
+      schedule: {
+        ...prevState.schedule,
+        [key]: value
+      }
+    }));
   }
 
   showDeleteAlert(subject) {
@@ -75,25 +100,14 @@ class CreateSchedule extends Component {
   }
 
   render() {
-    let subjects = this.props.subjectsObj.subjects.map(subject => (
-      <View key={subject.id} style={styles.subjectBtn}>
-        <TouchableOpacity onPress={() => this.showDeleteAlert(subject)}>
-          <Material 
-            name="close"
-            backgroundColor="transparent"
-            size={15}
-            color="#00b16e" 
-          />
-        </TouchableOpacity>
-        <Text style={[commonStyles.fontLato, {color: "#00b16e"}]}>{' ' + subject.title}</Text>
-      </View>
-    ));
-
     return (
       <View style={styles.container}>
         <ScheduleModal 
           modalVisible={this.state.modalVisible}
           onHideModal={() => this.setModalVisible(false)}
+          screenTitle={this.state.screen}
+          editSchedule={this.state.schedule}
+          onChange={(key, value) => this.handleChange(key,value)}
         />
         <ScrollView>
           <View style={styles.centerTitle}>
@@ -108,12 +122,14 @@ class CreateSchedule extends Component {
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>
-            <TouchableOpacity style={styles.addWorkBtn} onPress={this.onAddSchedule}>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddSchedule('ADD SCHEDULE')}>
               <Text style={[commonStyles.boldText, styles.workText]}>
                 + Add Schedule
               </Text>
             </TouchableOpacity>
           </Form>
+
+          <ScheduleTable onEditSchedule={(title, scheduleObj) => this.onEditSchedule(title, scheduleObj)}/>
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
