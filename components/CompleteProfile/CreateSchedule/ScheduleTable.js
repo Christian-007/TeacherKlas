@@ -99,11 +99,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   centerHeader: {
-    width: '45%',
+    width: '40%',
     padding: 10
   },
   rightHeader: {
-    width: '25%',
+    width: '30%',
     borderLeftWidth: 1,
     borderLeftColor: '#eee',
     padding: 10

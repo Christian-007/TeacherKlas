@@ -121,6 +121,7 @@ class CreateSchedule extends Component {
             stage1='#00b16e'
             stage2='#00b16e'
             stage3='#00b16e'
+            current='stage3'
           />
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>

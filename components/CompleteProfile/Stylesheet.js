@@ -21,13 +21,18 @@ export default ScaledSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 50, paddingRight: 50,
+    flex: 1,
+  },
+  events: {
+    alignItems: 'center',
+    width: 20,
+    flexDirection: 'column',
     position: 'relative',
+    zIndex: 0,
   },
   hr: {
     width: '90@s',
     height: 2,
-    backgroundColor: '#cdccd8',
     zIndex: 0,
   },
   // --- END OF USER JOURNEY STYLE ---

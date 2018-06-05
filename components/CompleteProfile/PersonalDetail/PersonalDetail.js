@@ -121,6 +121,7 @@ class PersonalDetail extends Component {
             stage1='#00b16e'
             stage2='#cdccd8'
             stage3='#cdccd8'
+            current='stage1'
           />
 
           <Form style={[styles.formWrapper]}>

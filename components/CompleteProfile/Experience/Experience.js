@@ -141,11 +141,12 @@ class Experience extends Component {
             stage1='#00b16e'
             stage2='#00b16e'
             stage3='#cdccd8'
+            current='stage2'
           />
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>WORKING EXPERIENCE</Label>
-            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddExperience('work', 'WORKING EXPERIENCE')} disabled={this.state.disableSubmit}>
+            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddExperience('work', 'EXPERIENCE')} disabled={this.state.disableSubmit}>
               <Text style={[commonStyles.boldText, styles.workText]}>
                 + Add Working Experience
               </Text>
