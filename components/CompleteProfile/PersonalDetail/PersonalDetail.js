@@ -13,6 +13,7 @@ import { deleteSubject } from '../../../actions';
 import UserJourney from '../../../common/UserJourney';
 import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
+import PersonalForm from './PersonalForm';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -124,6 +125,9 @@ class PersonalDetail extends Component {
             current='stage1'
           />
 
+          <Form style={styles.inputWrapper}>
+            <PersonalForm />
+          </Form>
           <Form style={[styles.formWrapper]}>
             <Item stackedLabel style={{marginLeft: 0, width: '47%'}}>
               <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>FIRST NAME</Label>
