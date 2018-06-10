@@ -42,7 +42,7 @@ export default ScaledSheet.create({
     paddingRight: 30,
   },
   formWrapper: {
-    marginTop: 30,
+    marginTop: 20,
     paddingLeft: 30,
     paddingRight: 30,
     flexDirection: 'row',
