@@ -1,7 +1,6 @@
 import * as t from './types';
-import * as api from '../config/api';
-import { auth, database } from "../config/firebase";
-
+import * as api from '../../utils/api';
+import { auth, database } from "../../utils/firebase";
 import { AsyncStorage } from 'react-native';
 
 export function registerUser(data) {

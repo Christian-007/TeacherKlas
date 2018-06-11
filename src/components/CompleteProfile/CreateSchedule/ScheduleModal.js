@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
-import styles from '../Stylesheet';
 import Material from 'react-native-vector-icons/MaterialIcons';
-import commonStyles from '../../../common/CommonStyleSheet';
 import ScheduleForm from './ScheduleForm';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSchedule, adjustSchedule } from '../../../actions/scheduleProfile';
+import { createSchedule, adjustSchedule } from '../../../modules/actions/scheduleProfile';
 
 class ScheduleModal extends Component {
   constructor(props) {

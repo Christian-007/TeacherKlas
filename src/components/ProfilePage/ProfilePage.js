@@ -5,10 +5,10 @@ import {
   View,
   Text 
 } from 'react-native';
-import { onSignOut } from "../../auth";
+import { onSignOut } from "../../../auth";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../../actions'
+import { logoutUser } from '../../modules/actions'
 
 class ProfilePage extends Component {
   constructor(props) {

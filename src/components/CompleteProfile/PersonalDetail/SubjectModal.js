@@ -3,7 +3,7 @@ import { Text, View, Button, TouchableHighlight } from 'react-native';
 import { List, ListItem } from 'native-base';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { chooseSubject } from '../../../actions';
+import { chooseSubject } from '../../../modules/actions';
 
 class SubjectModal extends Component {
   static navigationOptions = {

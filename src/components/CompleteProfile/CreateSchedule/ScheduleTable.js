@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
 import { connect } from 'react-redux';
-import { removeSchedule } from '../../../actions/scheduleProfile';
+import { removeSchedule } from '../../../modules/actions/scheduleProfile';
 import PropTypes from 'prop-types';
 
 class ScheduleTable extends Component {

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Alert, Button } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import { Label, Input, Item, Form, Textarea } from 'native-base';
+import { Label, Form, Textarea } from 'native-base';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../Stylesheet';
 import InputWithLabel from './InputWithLabel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteSubject } from '../../../../actions';
+import { deleteSubject } from '../../../../modules/actions';
 import commonStyles from '../../../../common/CommonStyleSheet';
 
 class PersonalForm extends Component {

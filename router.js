@@ -8,16 +8,16 @@ import {
 } from 'react-navigation';
 import { Button, Text, View } from 'react-native';
 
-import LoginPage from './components/LoginPage/LoginPage';
-import SignupPage from './components/SignupPage/SignupPage';
-import HomePage from './components/HomePage/HomePage';
-import ProfilePage from './components/ProfilePage/ProfilePage';
+import LoginPage from './src/components/LoginPage/LoginPage';
+import SignupPage from './src/components/SignupPage/SignupPage';
+import HomePage from './src/components/HomePage/HomePage';
+import ProfilePage from './src/components/ProfilePage/ProfilePage';
 
-import PersonalDetailPage from './components/CompleteProfile/PersonalDetail/PersonalDetail';
-import ExperiencePage from './components/CompleteProfile/Experience/Experience';
-import CreateSchedulePage from './components/CompleteProfile/CreateSchedule/CreateSchedule';
-import SubjectModal from './components/CompleteProfile/PersonalDetail/SubjectModal';
-import ExperienceModal from './components/CompleteProfile/Experience/ExperienceModal';
+import PersonalDetailPage from './src/components/CompleteProfile/PersonalDetail/PersonalDetail';
+import ExperiencePage from './src/components/CompleteProfile/Experience/Experience';
+import CreateSchedulePage from './src/components/CompleteProfile/CreateSchedule/CreateSchedule';
+import SubjectModal from './src/components/CompleteProfile/PersonalDetail/SubjectModal';
+import ExperienceModal from './src/components/CompleteProfile/Experience/ExperienceModal';
 
 const headerStyling = {
   backgroundColor: '#fff',

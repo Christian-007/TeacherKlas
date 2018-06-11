@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
-import { addEducationExperience } from '../../../actions';
+import { addEducationExperience } from '../../../modules/actions';
 import TextFieldWithLabel from '../../../common/TextFieldWithLabel';
 import RoundedSubmitButton from '../../../common/RoundedSubmitButton';
 

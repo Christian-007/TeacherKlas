@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { Badge, Icon, Text, Card, CardItem, Body } from 'native-base';
-import Material from 'react-native-vector-icons/MaterialIcons';
+import { Badge, Icon, Text, Card } from 'native-base';
 import { 
-  StyleSheet,
-  Button,
-  TextInput,
-  TouchableOpacity,
   View,
   Image,
   ScrollView,
@@ -13,7 +8,7 @@ import {
 import commonStyles from '../../common/CommonStyleSheet';
 import styles from './Stylesheet';
 
-export default class HomePage extends Component<{}> {
+export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = { 

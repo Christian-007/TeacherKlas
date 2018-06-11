@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native';
-import { Label, Input, Item, Form } from 'native-base';
+import { Label, Input, Item } from 'native-base';
 import commonStyles from '../../../../common/CommonStyleSheet';
 
 class InputGroup extends Component {

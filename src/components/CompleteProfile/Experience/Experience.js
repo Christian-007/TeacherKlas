@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
 import { H3, Label, Input, Item , Form, Textarea} from 'native-base';
-import Ionic from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
-import { scale } from 'react-native-size-matters';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteSubject } from '../../../actions';
+import { deleteSubject } from '../../../modules/actions';
 import UserJourney from '../../../common/UserJourney';
 
 class Experience extends Component {

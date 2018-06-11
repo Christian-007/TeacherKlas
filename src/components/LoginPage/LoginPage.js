@@ -12,11 +12,11 @@ import {
 import commonStyles from '../../common/CommonStyleSheet';
 import { Label, Input, Item } from 'native-base';
 import styles from './Stylesheet';
-import { onSignIn } from "../../auth";
+import { onSignIn } from "../../../auth";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { validateForm } from '../../config/api';
-import { loginUser } from '../../actions';
+// import { validateForm } from '../../utils/api';
+import { loginUser } from '../../modules/actions';
 import Loader from '../../common/Loader';
 
 class LoginPage extends Component {
@@ -85,7 +85,7 @@ class LoginPage extends Component {
         <Loader loading={this.state.loading} />
         <Image
           style={styles.imageLogo}
-          source={require('../../assets/images/klaslogotext.png')}
+          source={require('../../../assets/images/klaslogotext.png')}
         />
 
         <View style={styles.fieldWrapper}>

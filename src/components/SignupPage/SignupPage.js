@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import { Container, Label, Input, Item } from 'native-base';
-import { 
-  StyleSheet,
-  Button,
+import {
   TextInput,
   TouchableOpacity,
   View,
   Text,
   Image,
   Alert,
-  ActivityIndicator,
 } from 'react-native';
 import commonStyles from '../../common/CommonStyleSheet';
 import Loader from '../../common/Loader';
 import styles from './Stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { validateForm } from '../../config/api';
-import { registerUser } from '../../actions';
+import { validateForm } from '../../utils/api';
+import { registerUser } from '../../modules/actions';
 
 class SignupPage extends Component {
   constructor(props) {
@@ -141,7 +138,7 @@ class SignupPage extends Component {
           loading={this.state.loading} />
         <Image
           style={styles.imageLogo}
-          source={require('../../assets/images/klaslogotext.png')}
+          source={require('../../../assets/images/klaslogotext.png')}
         />
         <View style={styles.formWrapper}>
           <View style={commonStyles.itemWrapper}>
