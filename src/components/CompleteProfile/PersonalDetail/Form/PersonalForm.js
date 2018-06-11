@@ -9,6 +9,7 @@ import InputWithLabel from './InputWithLabel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../../modules/actions';
+import { uploadImage } from '../../../../modules/actions/uploadImage';
 import commonStyles from '../../../../common/CommonStyleSheet';
 
 class PersonalForm extends Component {
@@ -64,6 +65,9 @@ class PersonalForm extends Component {
         this.setState({avatarSource: source});
         this.setState({ isUploaded: true });
         console.log('avatarSource: ', source);
+
+        // UPLOAD IMAGE TO FIREBASE
+        this.props.uploadImage(response);
       }
     });
   }
@@ -209,4 +213,4 @@ const mapStateToProps = (state) => ({
   subjectsObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, { deleteSubject })(PersonalForm);
+export default connect(mapStateToProps, { deleteSubject, uploadImage })(PersonalForm);
