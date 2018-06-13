@@ -15,7 +15,7 @@ import styles from './Stylesheet';
 import { onSignIn } from "../../../auth";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { validateForm } from '../../utils/api';
+// import { validateForm } from '../../utils/formValidation';
 import { loginUser } from '../../modules/actions';
 import Loader from '../../common/Loader';
 

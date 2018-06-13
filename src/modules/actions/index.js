@@ -1,5 +1,4 @@
 import * as t from './types';
-import * as api from '../../utils/api';
 import { auth, database } from "../../utils/firebase";
 import { AsyncStorage } from 'react-native';
 

@@ -13,7 +13,7 @@ import Loader from '../../common/Loader';
 import styles from './Stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { validateForm } from '../../utils/api';
+import { validateForm } from '../../utils/formValidation';
 import { registerUser } from '../../modules/actions';
 
 class SignupPage extends Component {

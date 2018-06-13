@@ -6,6 +6,8 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGGED_OUT = 'LOGGED_OUT';
 
 // COMPLETE PROFILE TYPES
+export const CHANGE_INPUT = 'CHANGE_INPUT';
+
 export const ADD_SUBJECT = 'ADD_SUBJECT';
 export const DELETE_SUBJECT = 'DELETE_SUBJECT';
 

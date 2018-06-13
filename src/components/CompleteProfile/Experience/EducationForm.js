@@ -15,7 +15,7 @@ class EducationForm extends Component {
     this.state = {
       education: {
         university: '',
-        degree: 'bachelor',
+        degree: 'Bachelor',
         major: '',
         startmonth: '',
         startyear: '',
@@ -66,18 +66,18 @@ class EducationForm extends Component {
         <Form style={[styles.inputWrapper]}>
           <Label style={[commonStyles.formLabel, styles.labelForm]}>DEGREE</Label>
           <Picker
-            iosHeader="Select degree"
+            iosHeader="Degree"
             mode="dropdown"
             selectedValue={this.state.education.degree}
             onValueChange={(degree) => this.onValueChangeEducation('degree', degree)}
             style={{borderBottomWidth: 0.5, borderColor: '#D9D5Dc', alignSelf: 'stretch', paddingTop: 0, paddingBottom: 0, height: 35}}
             textStyle={[commonStyles.fontLato, {fontSize: 12, paddingLeft: 0}]}
           >
-            <Picker.Item label="High School" value="school" />
-            <Picker.Item label="Diploma" value="diploma" />
-            <Picker.Item label="Bachelor" value="bachelor" />
-            <Picker.Item label="Masters" value="masters" />
-            <Picker.Item label="PhD" value="phd" />
+            <Picker.Item label="High School" value="High School" />
+            <Picker.Item label="Diploma" value="Diploma" />
+            <Picker.Item label="Bachelor" value="Bachelor" />
+            <Picker.Item label="Masters" value="Masters" />
+            <Picker.Item label="PhD" value="PhD" />
           </Picker>
         </Form>
 

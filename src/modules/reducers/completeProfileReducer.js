@@ -3,6 +3,12 @@ import * as t from '../actions/types';
 
 const initialState = {
   imgData: {},
+  personalData: {
+    fname: '',
+    lname: '',
+    location: '',
+    summary: '',
+  },
   subjects: [
     {
       id: 0,
@@ -47,6 +53,14 @@ const completeProfileReducer = (state = initialState, action) => {
       return {
         ...state,
         imgData: action.data
+      }
+    
+    case t.CHANGE_INPUT:
+      return {
+        ...state,
+        personalData: {
+          [action.key]: action.value
+        }
       }
 
     case t.ADD_SUBJECT:

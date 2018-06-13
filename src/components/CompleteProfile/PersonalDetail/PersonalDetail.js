@@ -20,12 +20,32 @@ class PersonalDetail extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      avatarSource: {},
+      fname: '',
+      lname: '',
+      location: '',
+      subjects: 0,
+      summary: '',
+      errors: {},
+      isUploaded: false,
+      disableSubmit: false,
+      loading: false,
+      modalVisible: false,
+    };
     this.onSubmit = this.onSubmit.bind(this);
     this.onAddSubject = this.onAddSubject.bind(this);
   }
 
+  onChangeInput(key, value) {
+    this.setState({
+      [key]: value
+    });
+  }
+
   onSubmit() {
-    this.props.navigation.navigate('Experience');
+    // this.props.navigation.navigate('Experience');
+    console.log('state:', this.state);
   }
 
   onAddSubject() {
@@ -49,7 +69,10 @@ class PersonalDetail extends Component {
 
           <View style={{paddingBottom: 20}}>
             <PersonalForm 
-            onAddSubject={this.onAddSubject}/>
+              currentState={this.state}
+              onChangeInput={(key,value) => this.onChangeInput(key,value)}
+              onAddSubject={this.onAddSubject}
+            />
           </View>
         </ScrollView>
 

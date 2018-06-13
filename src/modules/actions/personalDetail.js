@@ -16,11 +16,25 @@ export function uploadImage(imgData) {
       console.log("Error upload: ", error);
     });*/
   };
-};
+}
+
+export function onChangeInput(key, value) {
+  return (dispatch) => {
+    dispatch(changeInput(key, value));
+  };
+}
 
 const addImage = (imgData) => {
   return {
     type: t.UPLOAD_IMAGE,
     data: imgData
+  }
+}
+
+const changeInput = (key, value) => {
+  return {
+    type: t.CHANGE_INPUT,
+    key,
+    value,
   }
 }

@@ -111,8 +111,9 @@ class Experience extends Component {
           />
         </View>
         <View style={{flexWrap: 'wrap', flex: 3}}>
-          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.university} ({education.startmonth} {education.startyear} - {education.endmonth} {education.endyear})</Text>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.degree} of {education.major} </Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.university}</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({education.startmonth} {education.startyear} - {education.endmonth} {education.endyear})</Text>
         </View>
         <View style={{flex: 1,}}>
           <TouchableOpacity>

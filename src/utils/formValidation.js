@@ -1,4 +1,3 @@
-import { auth, database } from './firebase';
 import validator from 'validator';
 
 export const validateForm = (data) => {
@@ -34,4 +33,19 @@ export const validateForm = (data) => {
     errors,
     isValid: isValid
   };
+}
+
+export const validatePersonalForm = (data) => {
+  const { fname, lname, location, subjects, summary } = data;
+  let errors = {}; let isValid = false;
+
+  if(!validator.isEmail(email)) {
+    errors.email = 'invalid email address';
+  }
+
+  return {
+    errors,
+    isValid: isValid
+  };
+
 }
