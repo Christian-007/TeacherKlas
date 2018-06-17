@@ -37,12 +37,12 @@ export default ScaledSheet.create({
   },
   // --- END OF USER JOURNEY STYLE ---
   inputWrapper: {
-    marginTop: 20,
+    marginTop: 15,
     paddingLeft: 30,
     paddingRight: 30,
   },
   formWrapper: {
-    marginTop: 20,
+    marginTop: 15,
     paddingLeft: 30,
     paddingRight: 30,
     flexDirection: 'row',

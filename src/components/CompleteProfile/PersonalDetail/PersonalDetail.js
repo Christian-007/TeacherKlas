@@ -4,7 +4,10 @@ import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import UserJourney from '../../../common/UserJourney';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import PersonalForm from './Form/PersonalForm';
+import { validatePersonalForm } from '../../../utils/formValidation';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,9 +46,32 @@ class PersonalDetail extends Component {
     });
   }
 
+  formValidation() {
+    const { errors, isValid } = validatePersonalForm(this.state);
+
+    if(!isValid) {
+      this.setState({ errors }, () => {
+        console.log(this.state);
+      });
+    }
+    
+    return isValid;
+  }
+
   onSubmit() {
-    // this.props.navigation.navigate('Experience');
-    console.log('state:', this.state);
+    console.log('subjects: ', this.props.profileObj.subjects);
+    this.setState({subjects: this.props.profileObj.subjects.length}, () => {
+      
+      // validate form here
+      // if it's success, then navigate to the next slide
+      if(this.formValidation()){
+        console.log('no error');
+        this.setState({ errors: {} }, () => {
+          this.props.navigation.navigate('Experience');
+        });
+      }
+      // otherwise, shows errors on releavant text field
+    });
   }
 
   onAddSubject() {
@@ -87,4 +113,12 @@ class PersonalDetail extends Component {
   }
 }
 
-export default PersonalDetail;
+PersonalDetail.propTypes = {
+  profileObj: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  profileObj: state.completeProfileReducer
+});
+
+export default connect(mapStateToProps, {})(PersonalDetail);

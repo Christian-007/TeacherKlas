@@ -119,12 +119,14 @@ class PersonalForm extends Component {
             labelText="FIRST NAME"
             onChangeText={(fname) => this.props.onChangeInput('fname', fname)}
             value={this.props.currentState.fname}
+            error={this.props.currentState.errors.fname}
           />
           <InputWithLabel
             itemStyle={{marginLeft: 0, width: '47%'}}
             labelText="LAST NAME"
             onChangeText={(lname) => this.props.onChangeInput('lname', lname)}
             value={this.props.currentState.lname}
+            error={this.props.currentState.errors.lname}
           />
         </Form>
         
@@ -132,6 +134,7 @@ class PersonalForm extends Component {
           <InputWithLabel 
             onChangeText={(location) => this.props.onChangeInput('location', location)}
             value={this.props.currentState.location}
+            error={this.props.currentState.errors.location}
             labelText="LOCATION"
           />
         </Form>
@@ -146,6 +149,9 @@ class PersonalForm extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          <Text style={[commonStyles.fontLato, {color:'#ed2f2f', fontSize: 11, marginTop: 5,}]}>
+            {this.props.currentState.errors.subjects ? this.props.currentState.errors.subjects : ''}
+          </Text>
         </Form>
 
         <Form style={styles.inputWrapper}>
@@ -159,6 +165,9 @@ class PersonalForm extends Component {
             onChangeText={(summary) => this.props.onChangeInput('summary', summary)}
             value={this.props.currentState.summary}
           />
+          <Text style={[commonStyles.fontLato, {color:'#ed2f2f', fontSize: 11, marginTop: 5,}]}>
+            {this.props.currentState.errors.summary ? this.props.currentState.errors.summary : ''}
+          </Text>
         </Form>
       </View>
     )
