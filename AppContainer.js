@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, ActivityIndicator } from 'react-native'
 import { isSignedIn } from "./auth";
+import { Root } from "native-base";
 import { SignedOut, SignedIn, createRootNavigator } from "./router";
 // import { SignedOut, createRootNavigator } from "./router";
 
@@ -29,7 +30,11 @@ class AppContainer extends Component {
     }
 
     const Layout = createRootNavigator(signedIn);
-    return <Layout />;
+    return (
+      <Root>
+        <Layout />
+      </Root>
+    )
 
     // if (signedIn) {
     //   return <SignedIn />;

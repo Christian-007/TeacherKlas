@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Button, ScrollView } from 'react-native';
+import { Toast } from 'native-base';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
 import UserJourney from '../../../common/UserJourney';
@@ -50,27 +51,27 @@ class PersonalDetail extends Component {
     const { errors, isValid } = validatePersonalForm(this.state);
 
     if(!isValid) {
-      this.setState({ errors }, () => {
-        console.log(this.state);
-      });
+      this.setState({ errors });
     }
     
     return isValid;
   }
 
   onSubmit() {
-    console.log('subjects: ', this.props.profileObj.subjects);
     this.setState({subjects: this.props.profileObj.subjects.length}, () => {
       
       // validate form here
       // if it's success, then navigate to the next slide
       if(this.formValidation()){
-        console.log('no error');
         this.setState({ errors: {} }, () => {
           this.props.navigation.navigate('Experience');
         });
+      } else {
+        Toast.show({
+          text: 'Please fill all the fields!',
+          buttonText: 'Okay'
+        });
       }
-      // otherwise, shows errors on releavant text field
     });
   }
 

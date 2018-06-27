@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Button, TouchableOpacity, ScrollView } from 'react-native';
-import { H3, Label, Input, Item , Form, Textarea, Picker} from 'native-base';
+import { H3, Label, Input, Item , Form, CheckBox } from 'native-base';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from '../Stylesheet';
@@ -21,6 +21,7 @@ class WorkForm extends Component {
         startyear: '',
         endmonth: '',
         endyear: '',
+        workHere: false,
       }
     }
     this.onSubmit = this.onSubmit.bind(this);
@@ -92,28 +93,38 @@ class WorkForm extends Component {
                 />
               </View>
             </Item>
-            <Item stackedLabel style={{marginLeft: 0, borderWidth: 0, borderColor: '#fff', width: '45%'}}>
-              <Label style={[commonStyles.formLabel, styles.labelForm]}>END DATE</Label>
-              <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-                <Input 
-                  style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
-                  underlineColorAndroid='transparent'
-                  onChangeText={(endmonth) => this.onValueChangeWork('endmonth', endmonth)}
-                  value={this.state.work.endmonth}
-                  placeholder="mm"
-                  placeholderTextColor="#b3b3b3"
-                />
-                <Input 
-                  style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
-                  underlineColorAndroid='transparent'
-                  onChangeText={(endyear) => this.onValueChangeWork('endyear', endyear)}
-                  value={this.state.work.endyear}
-                  placeholder="yyyy"
-                  placeholderTextColor="#b3b3b3"
-                />
-              </View>
-            </Item>
+            {!this.state.workHere && 
+              (
+                <Item stackedLabel style={{marginLeft: 0, borderWidth: 0, borderColor: '#fff', width: '45%'}}>
+                  <Label style={[commonStyles.formLabel, styles.labelForm]}>END DATE</Label>
+                  <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+                    <Input 
+                      style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
+                      underlineColorAndroid='transparent'
+                      onChangeText={(endmonth) => this.onValueChangeWork('endmonth', endmonth)}
+                      value={this.state.work.endmonth}
+                      placeholder="mm"
+                      placeholderTextColor="#b3b3b3"
+                    />
+                    <Input 
+                      style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
+                      underlineColorAndroid='transparent'
+                      onChangeText={(endyear) => this.onValueChangeWork('endyear', endyear)}
+                      value={this.state.work.endyear}
+                      placeholder="yyyy"
+                      placeholderTextColor="#b3b3b3"
+                    />
+                  </View>
+                </Item>
+              )
+            }
           </Form>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 35, paddingLeft: 15}} >
+            <View>
+              <CheckBox checked={this.state.workHere} onPress={() => this.setState({workHere: !this.state.workHere})}/>
+            </View>
+            <Text style={commonStyles.fontLato}>{'       '}I currently work here</Text>
+          </View>
         </ScrollView>
         <View style={[styles.submitWrapper]}>
           <RoundedSubmitButton 

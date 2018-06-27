@@ -156,15 +156,30 @@ class PersonalForm extends Component {
 
         <Form style={styles.inputWrapper}>
           <Label style={[commonStyles.formLabel, {letterSpacing: 2, color: '#b3b3b3', fontSize: 12}]}>PROFILE SUMMARY</Label>
-          <Textarea 
-            rowSpan={5}
-            bordered
-            placeholder="Add some description for your profile"
-            placeholderTextColor="#b3b3b3"
-            style={[commonStyles.fontLato, styles.summaryTextarea]}
-            onChangeText={(summary) => this.props.onChangeInput('summary', summary)}
-            value={this.props.currentState.summary}
-          />
+          {this.props.currentState.errors.summary ? 
+            (
+              <Textarea 
+                rowSpan={5}
+                bordered
+                placeholder="Add some description for your profile"
+                placeholderTextColor="#b3b3b3"
+                style={[commonStyles.fontLato, styles.summaryTextarea, {borderColor: '#ed2f2f'}]}
+                onChangeText={(summary) => this.props.onChangeInput('summary', summary)}
+                value={this.props.currentState.summary}
+              />
+            ) : 
+            (
+              <Textarea 
+                rowSpan={5}
+                bordered
+                placeholder="Add some description for your profile"
+                placeholderTextColor="#b3b3b3"
+                style={[commonStyles.fontLato, styles.summaryTextarea]}
+                onChangeText={(summary) => this.props.onChangeInput('summary', summary)}
+                value={this.props.currentState.summary}
+              />
+            )
+          }
           <Text style={[commonStyles.fontLato, {color:'#ed2f2f', fontSize: 11, marginTop: 5,}]}>
             {this.props.currentState.errors.summary ? this.props.currentState.errors.summary : ''}
           </Text>

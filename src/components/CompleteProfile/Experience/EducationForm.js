@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Button, TouchableOpacity, ScrollView } from 'react-native';
-import { H3, Label, Input, Item , Form, Textarea, Picker} from 'native-base';
+import { Text, View, ScrollView } from 'react-native';
+import { H3, Label, Input, Item , Form, CheckBox, Picker} from 'native-base';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from '../Stylesheet';
@@ -21,6 +21,7 @@ class EducationForm extends Component {
         startyear: '',
         endmonth: '',
         endyear: '',
+        studyHere: '',
       },
     }
     this.onSubmit = this.onSubmit.bind(this);
@@ -44,7 +45,6 @@ class EducationForm extends Component {
   }
 
   render(){
-
     return (
       <View style={{ flex: 1, backgroundColor: '#fff'}}>
         <ScrollView>
@@ -103,28 +103,38 @@ class EducationForm extends Component {
               />
             </View>
           </Item>
-          <Item stackedLabel style={{marginLeft: 0, borderWidth: 0, borderColor: '#fff', width: '45%'}}>
-            <Label style={[commonStyles.formLabel, styles.labelForm]}>END DATE</Label>
-            <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-              <Input 
-                style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(endmonth) => this.onValueChangeEducation('endmonth', endmonth)}
-                value={this.state.education.endmonth}
-                placeholder="mm"
-                placeholderTextColor="#b3b3b3"
-              />
-              <Input 
-                style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
-                underlineColorAndroid='transparent'
-                onChangeText={(endyear) => this.onValueChangeEducation('endyear', endyear)}
-                value={this.state.education.endyear}
-                placeholder="yyyy"
-                placeholderTextColor="#b3b3b3"
-              />
-            </View>
-          </Item>
-        </Form> 
+          {!this.state.studyHere && 
+            (
+              <Item stackedLabel style={{marginLeft: 0, borderWidth: 0, borderColor: '#fff', width: '45%'}}>
+                <Label style={[commonStyles.formLabel, styles.labelForm]}>END DATE</Label>
+                <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+                  <Input 
+                    style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(endmonth) => this.onValueChangeEducation('endmonth', endmonth)}
+                    value={this.state.education.endmonth}
+                    placeholder="mm"
+                    placeholderTextColor="#b3b3b3"
+                  />
+                  <Input 
+                    style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(endyear) => this.onValueChangeEducation('endyear', endyear)}
+                    value={this.state.education.endyear}
+                    placeholder="yyyy"
+                    placeholderTextColor="#b3b3b3"
+                  />
+                </View>
+              </Item>
+            )
+          }
+        </Form>
+        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 35, paddingLeft: 15}} >
+          <View>
+            <CheckBox checked={this.state.studyHere} onPress={() => this.setState({studyHere: !this.state.studyHere})}/>
+          </View>
+          <Text style={commonStyles.fontLato}>{'       '}I currently study here</Text>
+        </View>
         </ScrollView>
         <View style={[styles.submitWrapper]}>
           <RoundedSubmitButton 

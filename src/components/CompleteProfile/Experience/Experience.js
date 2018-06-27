@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSubject } from '../../../modules/actions';
 import UserJourney from '../../../common/UserJourney';
+import moment from 'moment';
 
 class Experience extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -70,6 +71,7 @@ class Experience extends Component {
   }
 
   render() {
+
     let works = this.props.profileObj.workExperience.map(work => (
       <View key={work.id} style={[styles.cardExperience]}>
         <View style={{flex: 1}}>
@@ -83,7 +85,7 @@ class Experience extends Component {
         </View>
         <View style={{flexWrap: 'wrap', flex: 3}}>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{work.role} at {work.company} </Text>
-          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({work.startmonth} {work.startyear} - {work.endmonth} {work.endyear})</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({moment(work.startmonth, 'MM').format('MMMM')} {work.startyear} - {moment(work.endmonth, 'MM').format('MMMM')} {work.endyear})</Text>
         </View>
         <View style={{flex: 1,}}>
           <TouchableOpacity>
@@ -113,7 +115,7 @@ class Experience extends Component {
         <View style={{flexWrap: 'wrap', flex: 3}}>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.degree} of {education.major} </Text>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.university}</Text>
-          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({education.startmonth} {education.startyear} - {education.endmonth} {education.endyear})</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({moment(education.startmonth, 'MM').format('MMMM')} {education.startyear} - {moment(education.endmonth, 'MM').format('MMMM')} {education.endyear})</Text>
         </View>
         <View style={{flex: 1,}}>
           <TouchableOpacity>
