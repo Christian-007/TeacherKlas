@@ -27,7 +27,8 @@ const initialState = {
     startmonth: "02",
     startyear: "2012",
     endmonth: "02",
-    endyear: "2014"
+    endyear: "2014",
+    workHere: false
   }],
   education: [{
     id: 0,
@@ -37,7 +38,8 @@ const initialState = {
     startmonth: "01",
     startyear: "2012",
     endmonth: "02",
-    endyear: "2014"
+    endyear: "2014",
+    studyHere: false
   }],
   schedules: [{
     id: 0,
@@ -89,6 +91,7 @@ const completeProfileReducer = (state = initialState, action) => {
             startyear: action.data.startyear,
             endmonth: action.data.endmonth,
             endyear: action.data.endyear,
+            workHere: action.data.workHere,
           }
         ]
       };
@@ -107,6 +110,7 @@ const completeProfileReducer = (state = initialState, action) => {
             startyear: action.data.startyear,
             endmonth: action.data.endmonth,
             endyear: action.data.endyear,
+            studyHere: action.data.studyHere
           }
         ]
       };
@@ -156,6 +160,21 @@ const completeProfileReducer = (state = initialState, action) => {
         ...state,
         schedules: state.schedules.filter(schedule => schedule.id !== scheduleId)
       };
+
+    case t.DELETE_EXPERIENCE:
+      const expId = action.id;
+      const expType = action.expType;
+      if (expType === "WORK") {
+        return {
+          ...state,
+          workExperience: state.workExperience.filter(exp => exp.id !== expId)
+        };
+      } else {
+        return {
+          ...state,
+          education: state.education.filter(exp => exp.id !== expId)
+        };
+      }
       
     default:
       return state;

@@ -13,16 +13,14 @@ class EducationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      education: {
-        university: '',
-        degree: 'Bachelor',
-        major: '',
-        startmonth: '',
-        startyear: '',
-        endmonth: '',
-        endyear: '',
-        studyHere: '',
-      },
+      university: '',
+      degree: 'Bachelor',
+      major: '',
+      startmonth: '',
+      startyear: '',
+      endmonth: '',
+      endyear: '',
+      studyHere: false,
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.onValueChangeEducation = this.onValueChangeEducation.bind(this);
@@ -31,16 +29,27 @@ class EducationForm extends Component {
   onValueChangeEducation(key, value) {
     this.setState(prevState => ({
       ...prevState,
-      education: {
-        ...prevState.education,
-        [key]: value
-      }
+      [key]: value
     }));
+  }
+
+  onCheckBox = () => {
+    if (!this.state.studyHere) {
+      this.setState({
+        studyHere: !this.state.studyHere,
+        endmonth: '',
+        endyear: '',
+      });
+    } else {
+      this.setState({
+        studyHere: !this.state.studyHere,
+      });
+    }
   }
 
   onSubmit() {
     console.log('data: ', this.state);
-    this.props.addEducationExperience(this.state.education);
+    this.props.addEducationExperience(this.state);
     this.props.propsNavigation.goBack();
   }
 
@@ -50,7 +59,7 @@ class EducationForm extends Component {
         <ScrollView>
         <TextFieldWithLabel 
           onChangeText={(university) => this.onValueChangeEducation('university', university)}
-          value={this.state.education.university}
+          value={this.state.university}
           placeholder="Name of school / university"
           label="SCHOOL / UNIVERSITY"
           formStyles={styles.inputWrapper}
@@ -58,7 +67,7 @@ class EducationForm extends Component {
 
         <TextFieldWithLabel 
           onChangeText={(major) => this.onValueChangeEducation('major', major)}
-          value={this.state.education.major}
+          value={this.state.major}
           label="MAJOR"
           formStyles={styles.inputWrapper}
         />
@@ -68,7 +77,7 @@ class EducationForm extends Component {
           <Picker
             iosHeader="Degree"
             mode="dropdown"
-            selectedValue={this.state.education.degree}
+            selectedValue={this.state.degree}
             onValueChange={(degree) => this.onValueChangeEducation('degree', degree)}
             style={{borderBottomWidth: 0.5, borderColor: '#D9D5Dc', alignSelf: 'stretch', paddingTop: 0, paddingBottom: 0, height: 35}}
             textStyle={[commonStyles.fontLato, {fontSize: 12, paddingLeft: 0}]}
@@ -89,7 +98,7 @@ class EducationForm extends Component {
                 style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                 underlineColorAndroid='transparent'
                 onChangeText={(startmonth) => this.onValueChangeEducation('startmonth', startmonth)}
-                value={this.state.education.startmonth}
+                value={this.state.startmonth}
                 placeholder="mm"
                 placeholderTextColor="#b3b3b3"
               />
@@ -97,7 +106,7 @@ class EducationForm extends Component {
                 style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                 underlineColorAndroid='transparent'
                 onChangeText={(startyear) => this.onValueChangeEducation('startyear', startyear)}
-                value={this.state.education.startyear}
+                value={this.state.startyear}
                 placeholder="yyyy"
                 placeholderTextColor="#b3b3b3"
               />
@@ -112,7 +121,7 @@ class EducationForm extends Component {
                     style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                     underlineColorAndroid='transparent'
                     onChangeText={(endmonth) => this.onValueChangeEducation('endmonth', endmonth)}
-                    value={this.state.education.endmonth}
+                    value={this.state.endmonth}
                     placeholder="mm"
                     placeholderTextColor="#b3b3b3"
                   />
@@ -120,7 +129,7 @@ class EducationForm extends Component {
                     style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                     underlineColorAndroid='transparent'
                     onChangeText={(endyear) => this.onValueChangeEducation('endyear', endyear)}
-                    value={this.state.education.endyear}
+                    value={this.state.endyear}
                     placeholder="yyyy"
                     placeholderTextColor="#b3b3b3"
                   />
@@ -131,7 +140,7 @@ class EducationForm extends Component {
         </Form>
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 35, paddingLeft: 15}} >
           <View>
-            <CheckBox checked={this.state.studyHere} onPress={() => this.setState({studyHere: !this.state.studyHere})}/>
+            <CheckBox checked={this.state.studyHere} onPress={() => this.onCheckBox()}/>
           </View>
           <Text style={commonStyles.fontLato}>{'       '}I currently study here</Text>
         </View>

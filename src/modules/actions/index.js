@@ -130,6 +130,12 @@ export function addEducationExperience(data) {
   };
 }
 
+export function removeExperience(expType, expId) {
+  return (dispatch) => {
+    dispatch(deleteExperience(expType, expId));
+  };
+}
+
 // Actions Creators
 const checkingStatus = () => {
   return {
@@ -168,6 +174,14 @@ const addEducation = (data) => {
     type: t.ADD_EDUCATION,
     id: nextEducation++,
     data
+  }
+}
+
+const deleteExperience= (expType, expId) => {
+  return {
+    type: t.DELETE_EXPERIENCE,
+    id: expId,
+    expType,
   }
 }
 

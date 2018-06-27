@@ -7,7 +7,7 @@ import commonStyles from '../../../common/CommonStyleSheet';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteSubject } from '../../../modules/actions';
+import { removeExperience } from '../../../modules/actions';
 import UserJourney from '../../../common/UserJourney';
 import moment from 'moment';
 
@@ -26,20 +26,10 @@ class Experience extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      fname: '',
-      lname: '',
-      location: '',
-      subjects: '',
-      summary: '',
-      lname: '',
-      errors: {},
       disableSubmit: false,
-      loading: false,
-      modalVisible: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onAddExperience = this.onAddExperience.bind(this);
-    this.deleteSubject = this.deleteSubject.bind(this);
   }
 
   onSubmit() {
@@ -53,21 +43,20 @@ class Experience extends Component {
     });
   }
 
-  showDeleteAlert(subject) {
+  showDeleteAlert = (title, expType, expId) => {
     Alert.alert(
-      'Delete Subject',
-      `Remove ${subject.title}?`,
+      `Delete ${title}`,
+      `Remove the selected ${title}?`,
       [
-        {text: 'OK', onPress: () => this.deleteSubject(subject.id)},
+        {text: 'OK', onPress: () => this.deleteExperience(expType, expId)},
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
       ],
       { cancelable: false }
     )
   }
 
-  deleteSubject(subjectId) {
-    console.log('delete subject: ', subjectId);
-    this.props.deleteSubject(subjectId);
+  deleteExperience = (expType, expId) => {
+    this.props.removeExperience(expType, expId);
   }
 
   render() {
@@ -85,10 +74,14 @@ class Experience extends Component {
         </View>
         <View style={{flexWrap: 'wrap', flex: 3}}>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{work.role} at {work.company} </Text>
-          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({moment(work.startmonth, 'MM').format('MMMM')} {work.startyear} - {moment(work.endmonth, 'MM').format('MMMM')} {work.endyear})</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>
+            ({moment(work.startmonth, 'MM').format('MMMM')} {work.startyear} - {work.workHere ? 'Now' : moment(work.endmonth, 'MM').format('MMMM')+' '+work.endyear})
+          </Text>
         </View>
         <View style={{flex: 1,}}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.showDeleteAlert('work experience', 'WORK', work.id)}
+          >
             <Material 
               name="close"
               backgroundColor="transparent"
@@ -115,10 +108,14 @@ class Experience extends Component {
         <View style={{flexWrap: 'wrap', flex: 3}}>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.degree} of {education.major} </Text>
           <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>{education.university}</Text>
-          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>({moment(education.startmonth, 'MM').format('MMMM')} {education.startyear} - {moment(education.endmonth, 'MM').format('MMMM')} {education.endyear})</Text>
+          <Text style={[commonStyles.fontLato, {color: "#00b16e",}]}>
+            ({moment(education.startmonth, 'MM').format('MMMM')} {education.startyear} - {education.studyHere ? 'Now' : moment(education.endmonth, 'MM').format('MMMM')+' '+education.endyear})
+          </Text>
         </View>
         <View style={{flex: 1,}}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.showDeleteAlert('education', 'EDU', education.id)}
+          >
             <Material 
               name="close"
               backgroundColor="transparent"
@@ -186,4 +183,4 @@ const mapStateToProps = (state) => ({
   profileObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, { deleteSubject })(Experience);
+export default connect(mapStateToProps, { removeExperience })(Experience);

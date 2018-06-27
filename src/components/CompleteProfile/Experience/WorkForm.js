@@ -13,16 +13,14 @@ class WorkForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      work: {
-        company: '',
-        industry: '',
-        role: '',
-        startmonth: '',
-        startyear: '',
-        endmonth: '',
-        endyear: '',
-        workHere: false,
-      }
+      company: '',
+      industry: '',
+      role: '',
+      startmonth: '',
+      startyear: '',
+      endmonth: '',
+      endyear: '',
+      workHere: false,
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.onValueChangeWork = this.onValueChangeWork.bind(this);
@@ -31,16 +29,27 @@ class WorkForm extends Component {
   onValueChangeWork(key, value) {
     this.setState(prevState => ({
       ...prevState,
-      work: {
-        ...prevState.work,
-        [key]: value
-      }
+      [key]: value
     }));
+  }
+
+  onCheckBox = () => {
+    if (!this.state.workHere) {
+      this.setState({
+        workHere: !this.state.workHere,
+        endmonth: '',
+        endyear: '',
+      });
+    } else {
+      this.setState({
+        workHere: !this.state.workHere,
+      });
+    }
   }
 
   onSubmit() {
     console.log('data: ', this.state);
-    this.props.addWorkExperience(this.state.work);
+    this.props.addWorkExperience(this.state);
     this.props.propsNavigation.goBack();
   }
 
@@ -51,21 +60,21 @@ class WorkForm extends Component {
         <ScrollView>
           <TextFieldWithLabel 
             onChangeText={(company) => this.onValueChangeWork('company', company)}
-            value={this.state.work.company}
+            value={this.state.company}
             placeholder="Name of company"
             label="COMPANY"
             formStyles={styles.inputWrapper}
           />
           <TextFieldWithLabel 
             onChangeText={(industry) => this.onValueChangeWork('industry', industry)}
-            value={this.state.work.industry}
+            value={this.state.industry}
             placeholder="e.g. IT, Engineering, Finance"
             label="INDUSTRY"
             formStyles={styles.inputWrapper}
           />
           <TextFieldWithLabel 
             onChangeText={(role) => this.onValueChangeWork('role', role)}
-            value={this.state.work.role}
+            value={this.state.role}
             placeholder="e.g. Junior Developer, Office Manager"
             label="ROLE / JOB POSITION"
             formStyles={styles.inputWrapper}
@@ -79,7 +88,7 @@ class WorkForm extends Component {
                   style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                   underlineColorAndroid='transparent'
                   onChangeText={(startmonth) => this.onValueChangeWork('startmonth', startmonth)}
-                  value={this.state.work.startmonth}
+                  value={this.state.startmonth}
                   placeholder="mm"
                   placeholderTextColor="#b3b3b3"
                 />
@@ -87,7 +96,7 @@ class WorkForm extends Component {
                   style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                   underlineColorAndroid='transparent'
                   onChangeText={(startyear) => this.onValueChangeWork('startyear', startyear)}
-                  value={this.state.work.startyear}
+                  value={this.state.startyear}
                   placeholder="yyyy"
                   placeholderTextColor="#b3b3b3"
                 />
@@ -102,7 +111,7 @@ class WorkForm extends Component {
                       style={[commonStyles.fontLato, {fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                       underlineColorAndroid='transparent'
                       onChangeText={(endmonth) => this.onValueChangeWork('endmonth', endmonth)}
-                      value={this.state.work.endmonth}
+                      value={this.state.endmonth}
                       placeholder="mm"
                       placeholderTextColor="#b3b3b3"
                     />
@@ -110,7 +119,7 @@ class WorkForm extends Component {
                       style={[commonStyles.fontLato, {marginLeft: 10, fontSize: 13, borderBottomColor: '#d9d5dc', borderBottomWidth: 0.6}]}
                       underlineColorAndroid='transparent'
                       onChangeText={(endyear) => this.onValueChangeWork('endyear', endyear)}
-                      value={this.state.work.endyear}
+                      value={this.state.endyear}
                       placeholder="yyyy"
                       placeholderTextColor="#b3b3b3"
                     />
@@ -121,7 +130,7 @@ class WorkForm extends Component {
           </Form>
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 35, paddingLeft: 15}} >
             <View>
-              <CheckBox checked={this.state.workHere} onPress={() => this.setState({workHere: !this.state.workHere})}/>
+              <CheckBox checked={this.state.workHere} onPress={() => this.onCheckBox()}/>
             </View>
             <Text style={commonStyles.fontLato}>{'       '}I currently work here</Text>
           </View>
