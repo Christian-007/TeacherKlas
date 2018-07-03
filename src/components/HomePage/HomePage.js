@@ -65,8 +65,45 @@ export default class HomePage extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.paddingView}>
-          <Text style={styles.welcomeText}>Welcome, Christian</Text>
-          <Text style={styles.welcomeText}>here's your lessons.</Text>
+          <View style={{marginTop: 15, borderWidth: 1, borderColor: '#f2f5f7', borderRadius: 4}}>
+            <View style={{backgroundColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 10}}>
+              <Image
+                style={styles.roundedImg}
+                source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+                resizeMode="contain"
+              />
+              <View style={{marginLeft: 10}}>
+                <Text style={[commonStyles.fontLato, {fontSize: 20}]}>David Blain</Text>
+                <Text style={[commonStyles.lightText, {fontSize: 12}]}>Brighton, United Kingdom</Text>
+              </View>
+            </View>
+            <View style={{alignItems: 'center'}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
+                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>status</Text>
+                </View>
+                <View style={{width: '40%'}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
+                </View>
+              </View>
+              <View style={{borderTopWidth: 1, borderColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
+                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>schedule</Text>
+                </View>
+                <View style={{width: '40%'}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
+                </View>
+              </View>
+              <View style={{borderTopWidth: 1, borderColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
+                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>rate</Text>
+                </View>
+                <View style={{width: '40%'}}>
+                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
+                </View>
+              </View>
+            </View>
+          </View>
           <View style={styles.textWrapper}>
             <Text style={[commonStyles.boldText, styles.upcomingText]}>ENROLLED LESSONS</Text>
             <Badge style={{ backgroundColor: '#00b16e' }}>

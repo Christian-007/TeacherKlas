@@ -25,10 +25,9 @@ export default ScaledSheet.create({
   },
   events: {
     alignItems: 'center',
-    width: 20,
+    width: 21,
     flexDirection: 'column',
     position: 'relative',
-    zIndex: 0,
   },
   hr: {
     width: '90@s',

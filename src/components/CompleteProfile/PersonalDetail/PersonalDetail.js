@@ -8,6 +8,8 @@ import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PersonalForm from './Form/PersonalForm';
+import { onAddPersonal } from '../../../modules/actions/personalDetail';
+import Loader from '../../../common/Loader';
 import { validatePersonalForm } from '../../../utils/formValidation';
 
 class PersonalDetail extends Component {
@@ -63,6 +65,7 @@ class PersonalDetail extends Component {
       // validate form here
       // if it's success, then navigate to the next slide
       if(this.formValidation()){
+        this.props.onAddPersonal(this.state);
         this.setState({ errors: {} }, () => {
           this.props.navigation.navigate('Experience');
         });
@@ -82,6 +85,7 @@ class PersonalDetail extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Loader loading={this.props.profileObj.isLoading} />
         <ScrollView>
           <View style={styles.centerTitle}>
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
@@ -122,4 +126,4 @@ const mapStateToProps = (state) => ({
   profileObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, {})(PersonalDetail);
+export default connect(mapStateToProps, { onAddPersonal })(PersonalDetail);

@@ -1,6 +1,8 @@
 import * as t from './types';
 import { auth, database } from "../../utils/firebase";
-import { AsyncStorage } from 'react-native';
+import { Platform } from 'react-native';
+import { storage } from "../../utils/firebase";
+import RNFetchBlob from 'react-native-fetch-blob';
 
 export function createSchedule(data) {
   console.log('hey create')
@@ -21,14 +23,60 @@ export function removeSchedule(scheduleId) {
   };
 }
 
+const uploadImage = (uri, name,  mime = 'image/jpeg') => {
+  const storageRef = storage.ref('users'); // change this to be user ID
+  const userFolder = storageRef.child(name);
+  const Blob = RNFetchBlob.polyfill.Blob;
+  const fs = RNFetchBlob.fs;
+  window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+  window.Blob = Blob;
+  
+  return new Promise((resolve, reject) => {
+    let imgUri = uri; let uploadBlob = null;
+    const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
+
+    fs.readFile(uploadUri, 'base64')
+      .then(data => {
+        return Blob.build(data, { type: `${mime};BASE64` });
+      })
+      .then(blob => {
+        uploadBlob = blob;
+        return userFolder.put(blob, { contentType: mime, name: name });
+      })
+      .then(() => {
+        uploadBlob.close()
+        return userFolder.getDownloadURL();
+      })
+      .then(url => {
+        resolve(url);
+      })
+      .catch(error => {
+        reject(error)
+    })
+  })
+}
+
 export function submitProfile(data) {
-  return (dispatch) => Promise.all([
-    promiseProfile(data.workExperience, 'teacherExperience'),
-    promiseProfile(data.schedules, 'teacherSchedules'),
-    promiseProfile(data.education, 'teacherEducations'),
-    promiseProfile(data.subjects, 'teacherSubjects'),
-  ]).then((responses) => {
-    console.log('responses: ', responses);
+  return (dispatch) => new Promise((resolve, reject) => {
+    dispatch(uploadData());
+    Promise.all([
+      uploadImage(data.imgData.uri, data.imgData.fileName)
+      .then(imgUrl => {
+        console.log('URL', imgUrl);
+      }),
+      promiseProfile(data.workExperience, 'teacherExperience'),
+      promiseProfile(data.schedules, 'teacherSchedules'),
+      promiseProfile(data.education, 'teacherEducations'),
+      promiseProfile(data.subjects, 'teacherSubjects'),
+    ])
+    .then(responses => {
+      console.log('responses: ', responses);
+      dispatch(completeSubmission());
+      resolve(true);
+    })
+    .catch(error => {
+      reject(error);
+    });
   });
 }
 
@@ -56,6 +104,12 @@ const addSchedule = (schedule) => {
   }
 }
 
+const completeSubmission = () => {
+  return {
+    type: t.COMPLETE_PROFILE,
+  }
+}
+
 const updateSchedule = (schedule) => {
   return {
     type: t.UPDATE_SCHEDULE,
@@ -63,9 +117,15 @@ const updateSchedule = (schedule) => {
   }
 }
 
-const deleteSchedule= (scheduleId) => {
+const deleteSchedule = (scheduleId) => {
   return {
     type: t.DELETE_SCHEDULE,
     id: scheduleId
+  }
+}
+
+const uploadData = () => {
+  return {
+    type: t.IS_LOADING,
   }
 }

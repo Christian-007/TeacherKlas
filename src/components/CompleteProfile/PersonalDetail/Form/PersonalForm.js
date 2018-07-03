@@ -47,7 +47,7 @@ class PersonalForm extends Component {
         console.log('avatarSource: ', source);
 
         // UPLOAD IMAGE TO FIREBASE
-        // this.props.uploadImage(response);
+        this.props.uploadImage(response);
       }
     });
   }

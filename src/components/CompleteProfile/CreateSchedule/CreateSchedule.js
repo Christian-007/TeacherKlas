@@ -45,7 +45,14 @@ class CreateSchedule extends Component {
 
   onSubmit() {
     console.log('User data: ', this.props.profileObj);
-    this.props.submitProfile(this.props.profileObj);
+    this.props.submitProfile(this.props.profileObj)
+    .then(response => {
+      // navigate to app Home!!
+      console.log('response', response);
+    })
+    .catch(error => {
+      console.log('error', error);
+    });
   }
 
   onAddSchedule = (title) => {

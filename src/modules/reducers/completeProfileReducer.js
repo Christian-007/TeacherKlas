@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import * as t from '../actions/types';
 
 const initialState = {
+  isLoading: false,
   imgData: {},
   personalData: {
     fname: '',
@@ -51,17 +52,26 @@ const initialState = {
 
 const completeProfileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case t.UPLOAD_IMAGE:
+    case t.ADD_IMAGE:
       return {
         ...state,
         imgData: action.data
       }
     
-    case t.CHANGE_INPUT:
+    case t.IS_LOADING:
+      return {
+        ...state,
+        isLoading: true
+      };
+    
+    case t.ADD_PERSONAL:
       return {
         ...state,
         personalData: {
-          [action.key]: action.value
+          fname: action.data.fname,
+          lname: action.data.lname,
+          location: action.data.location,
+          summary: action.data.summary,
         }
       }
 
