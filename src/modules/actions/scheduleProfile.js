@@ -63,6 +63,13 @@ export function submitProfile(data) {
       uploadImage(data.imgData.uri, data.imgData.fileName)
       .then(imgUrl => {
         console.log('URL', imgUrl);
+        updateProfile(
+          {
+            ...data.personalData,
+            profileURL: imgUrl
+          },
+          'teachers/userId23456' // Use correct TeacherID
+        );
       }),
       promiseProfile(data.workExperience, 'teacherExperience'),
       promiseProfile(data.schedules, 'teacherSchedules'),
@@ -79,6 +86,18 @@ export function submitProfile(data) {
     });
   });
 }
+
+const updateProfile = (dataContent, dbChildRef) => {
+  return new Promise((resolve, reject) => {
+    database.ref(dbChildRef).set(dataContent, function(error) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(true);
+      }
+    });
+  });
+};
 
 const promiseProfile = (dataRef, dbChildRef) => {
   return new Promise((resolve, reject) => {
