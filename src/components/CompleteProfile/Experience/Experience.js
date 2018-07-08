@@ -152,7 +152,7 @@ class Experience extends Component {
             { works }
           </Form>
 
-          <Form style={styles.inputWrapper}>
+          <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>EDUCATION</Label>
             <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddExperience('education', 'EDUCATION')} disabled={this.state.disableSubmit}>
               <Text style={[commonStyles.boldText, styles.workText]}>

@@ -71,10 +71,10 @@ export function submitProfile(data) {
           'teachers/userId23456' // Use correct TeacherID
         );
       }),
-      promiseProfile(data.workExperience, 'teacherExperience'),
-      promiseProfile(data.schedules, 'teacherSchedules'),
-      promiseProfile(data.education, 'teacherEducations'),
-      promiseProfile(data.subjects, 'teacherSubjects'),
+      promiseProfile(data.workExperience, 'teacherExperience/userId23456'),
+      promiseProfile(data.schedules, 'teacherSchedules/userId23456'),
+      promiseProfile(data.education, 'teacherEducations/userId23456'),
+      promiseProfile(data.subjects, 'teacherSubjects/userId23456'),
     ])
     .then(responses => {
       console.log('responses: ', responses);

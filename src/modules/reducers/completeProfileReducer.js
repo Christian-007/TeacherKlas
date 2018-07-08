@@ -22,9 +22,9 @@ const initialState = {
   ],
   workExperience: [{
     id: 0,
-    company: "Company",
-    industry: "Industry",
-    role: "Role",
+    company: "Google Inc.",
+    industry: "Science and Technology",
+    role: "Full Stack Developer",
     startmonth: "02",
     startyear: "2012",
     endmonth: "02",
@@ -33,13 +33,13 @@ const initialState = {
   }],
   education: [{
     id: 0,
-    university: "University of Kensington",
-    degree: "masters",
+    university: "University of Birmingham",
+    degree: "Bachelor",
     major: "Science and Engineering",
     startmonth: "01",
     startyear: "2012",
-    endmonth: "02",
-    endyear: "2014",
+    endmonth: "01",
+    endyear: "2012",
     studyHere: false
   }],
   schedules: [{
