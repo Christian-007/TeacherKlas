@@ -4,6 +4,7 @@
 
 # Firebase Config
 config/constants.js
+ios/TeacherKlas/GoogleService-Info.plist
 
 # Xcode
 #
