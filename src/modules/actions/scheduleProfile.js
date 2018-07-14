@@ -1,7 +1,6 @@
 import * as t from './types';
-import { auth, database } from "../../utils/firebase";
+import firebase from 'react-native-firebase';
 import { Platform } from 'react-native';
-import { storage } from "../../utils/firebase";
 import RNFetchBlob from 'react-native-fetch-blob';
 
 export function createSchedule(data) {
@@ -24,7 +23,7 @@ export function removeSchedule(scheduleId) {
 }
 
 const uploadImage = (uri, name,  mime = 'image/jpeg') => {
-  const storageRef = storage.ref('users'); // change this to be user ID
+  const storageRef = firebase.storage().ref('users'); // change this to be user ID
   const userFolder = storageRef.child(name);
   const Blob = RNFetchBlob.polyfill.Blob;
   const fs = RNFetchBlob.fs;
@@ -41,7 +40,8 @@ const uploadImage = (uri, name,  mime = 'image/jpeg') => {
       })
       .then(blob => {
         uploadBlob = blob;
-        return userFolder.put(blob, { contentType: mime, name: name });
+        return userFolder.put(uploadUri, { contentType: mime, name: name }); // use URI instead of blob
+        // might not ned RNFetchBlob anymore
       })
       .then(() => {
         uploadBlob.close()
@@ -89,7 +89,7 @@ export function submitProfile(data) {
 
 const updateProfile = (dataContent, dbChildRef) => {
   return new Promise((resolve, reject) => {
-    database.ref(dbChildRef).set(dataContent, function(error) {
+    firebase.database().ref(dbChildRef).set(dataContent, function(error) {
       if (error) {
         reject(error);
       } else {
@@ -102,7 +102,7 @@ const updateProfile = (dataContent, dbChildRef) => {
 const promiseProfile = (dataRef, dbChildRef) => {
   return new Promise((resolve, reject) => {
     dataRef.map(datum => {
-      database.ref().child(dbChildRef).push(datum, function(error) {
+      firebase.database().ref().child(dbChildRef).push(datum, function(error) {
         if (error) {
           reject(error);
         } else {

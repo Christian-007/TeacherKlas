@@ -1,5 +1,5 @@
 import * as t from './types';
-import { auth, database } from "../../utils/firebase";
+import firebase from 'react-native-firebase';
 import { AsyncStorage } from 'react-native';
 
 export function registerUser(data) {
@@ -8,13 +8,13 @@ export function registerUser(data) {
     // update store with loading status
     dispatch(checkingStatus());
     try {
-      const registerApi = await auth.createUserWithEmailAndPassword(data.email, data.password);
+      const registerApi = await firebase.auth().createUserWithEmailAndPassword(data.email, data.password);
       dispatch(registerSuccess(registerApi));
-      await auth.onAuthStateChanged(async (user) => {
+      await firebase.auth().onAuthStateChanged(async (user) => {
         if(user) {
           try {
             // const sendEmail = await user.sendEmailVerification();
-            await database.ref('teachers/' + user.uid).set({
+            await firebase.database().ref('teachers/' + user.uid).set({
               email: data.email,
               completeProfile: false,
             }, function(error) {
@@ -46,12 +46,12 @@ export function loginUser(data) {
     dispatch(checkingStatus());
 
     try {
-      const loginApi = await auth.signInWithEmailAndPassword(data.email, data.password);
-      await auth.onAuthStateChanged(async (user) => {
+      const loginApi = await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+      await firebase.auth().onAuthStateChanged(async (user) => {
         if(user) {
           try {
             // const sendEmail = await user.sendEmailVerification();
-            await database.ref('/teachers/' + user.uid).once('value')
+            await firebase.database().ref('/teachers/' + user.uid).once('value')
               .then(function(snapshot) {
                 console.log('snapshot' + JSON.stringify(snapshot.val()));
                 const completeProfile = snapshot.val().completeProfile;
@@ -94,7 +94,7 @@ export function loginUser(data) {
 export function logoutUser() {
   return (dispatch) => new Promise(async (resolve, reject) => {
     try {
-      const logoutApi = await auth.signOut();
+      const logoutApi = await firebase.auth().signOut();
       dispatch(loggedOut());
       resolve(logoutApi);
     } catch (error) {
