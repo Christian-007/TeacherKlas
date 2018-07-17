@@ -7,6 +7,9 @@ import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.functions.RNFirebaseFunctionsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -36,7 +39,10 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new RNFirebaseAuthPackage(),
             new RNFirebaseDatabasePackage(),
-            new RNFirebaseStoragePackage()
+            new RNFirebaseStoragePackage(),
+            new RNFirebaseNotificationsPackage(),
+            new RNFirebaseMessagingPackage(),
+            new RNFirebaseFunctionsPackage()
       );
     }
 

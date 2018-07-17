@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button, ScrollView } from 'react-native';
+import { Text, View, Button, ScrollView, TouchableOpacity } from 'react-native';
 import { Toast } from 'native-base';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
@@ -11,6 +11,8 @@ import PersonalForm from './Form/PersonalForm';
 import { onAddPersonal } from '../../../modules/actions/personalDetail';
 import Loader from '../../../common/Loader';
 import { validatePersonalForm } from '../../../utils/formValidation';
+import firebase from 'react-native-firebase';
+import type { Notification } from 'react-native-firebase';
 
 class PersonalDetail extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -82,6 +84,80 @@ class PersonalDetail extends Component {
     this.props.navigation.navigate('SubjectModal');
   }
 
+  firebaseNotif = () => {
+    const FCM = firebase.messaging();
+    const rtdbRef = firebase.database();
+
+    FCM.requestPermission()
+    .then(() => {
+      // User has authorised  
+      console.log('Authorised user!');
+      FCM.getToken().then(currentToken => {
+        if (currentToken) {
+          console.log('Token', currentToken);
+          rtdbRef.ref('users/dY1grt123/notifTokens').set({
+            [currentToken]: true
+          }, err => {
+            if (err) {
+              console.log('error occurred:', err);
+            } else {
+              console.log('successfully write!');
+            }
+          })
+        } else {
+          // Show permission request.
+          console.log('No Instance ID token available. Request permission to generate one.');
+        }
+      }).catch(err => {
+        console.log('An error occurred while retrieving token. ', err);
+        
+      });
+    })
+    .catch(error => {
+      // User has rejected permissions
+      console.log('Reject permissions!');
+    });
+  }
+
+  componentDidMount() {
+    // Build a channel
+    const channel = new firebase.notifications.Android.Channel('Klas.co.id', 'Klas.co.id', firebase.notifications.Android.Importance.Max)
+      .setDescription('My apps test channel');
+    // Create the channel
+    firebase.notifications().android.createChannel(channel);
+
+    // Build a channel group
+    const channelGroup = new firebase.notifications.Android.ChannelGroup('Klas.co.id-Group', 'Klas.co.id Group');
+    // Create the channel group
+    firebase.notifications().android.createChannelGroup(channelGroup);
+
+    const notificationBuilder = new firebase.notifications.Notification()
+      .setNotificationId('notificationId')
+      .setTitle('My notification title')
+      .setBody('My notification body')
+      .setData({
+        key1: 'value1',
+        key2: 'value2',
+      });
+
+    notificationBuilder.android.setChannelId('Klas.co.id');
+
+    this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
+      // Process your notification as required
+      console.log('notification listen ', notification);
+      this.setState({
+        notifListenLog: 'hey, listen log!!',
+        
+      });
+      notification.android.setChannelId('Klas.co.id');
+      firebase.notifications().displayNotification(notification);
+    });
+  }
+
+  componentWillUnmount() {
+    this.notificationListener();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -97,6 +173,13 @@ class PersonalDetail extends Component {
             stage3='#cdccd8'
             current='stage1'
           />
+
+          <TouchableOpacity 
+            style={{backgroundColor: 'blue', padding: 10, width: 100, height: 35}}
+            onPress={this.firebaseNotif}
+          >
+            <Text style={{color: 'white'}}>Push Notif</Text>
+          </TouchableOpacity>
 
           <View style={{paddingBottom: 20}}>
             <PersonalForm 
