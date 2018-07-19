@@ -11,6 +11,7 @@ import UserJourney from '../../../common/UserJourney';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import ScheduleModal from './ScheduleModal';
 import ScheduleTable from './ScheduleTable';
+import ScheduleDays from './ScheduleDays';
 
 class CreateSchedule extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -128,6 +129,30 @@ class CreateSchedule extends Component {
 
           <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>
+          </Form>
+          <ScheduleDays
+            dayName="Monday"
+          />
+          <ScheduleDays
+            dayName="Tuesday"
+          />
+          <ScheduleDays
+            dayName="Wednesday"
+          />
+          <ScheduleDays
+            dayName="Thursday"
+          />
+          <ScheduleDays
+            dayName="Friday"
+          />
+          <ScheduleDays
+            dayName="Saturday"
+          />
+          <ScheduleDays
+            dayName="Sunday"
+          />
+          {/* <Form style={[styles.inputWrapper, {marginTop: 30}]}>
+            <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>
             <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddSchedule('ADD SCHEDULE')}>
               <Text style={[commonStyles.boldText, styles.workText]}>
                 + Add Schedule
@@ -135,7 +160,7 @@ class CreateSchedule extends Component {
             </TouchableOpacity>
           </Form>
 
-          <ScheduleTable onEditSchedule={(title, scheduleObj) => this.onEditSchedule(title, scheduleObj)}/>
+          <ScheduleTable onEditSchedule={(title, scheduleObj) => this.onEditSchedule(title, scheduleObj)}/> */}
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>
