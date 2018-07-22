@@ -74,6 +74,9 @@ export const SignedOut = createStackNavigator({
 /* --- Complete Profile Navigations ---- */
 const CompleteProfile = createStackNavigator(
   {
+    CreateSchedule: {
+      screen: CreateSchedulePage,
+    },
     PersonalDetail: {
       screen: PersonalDetailPage,
     },
@@ -86,9 +89,7 @@ const CompleteProfile = createStackNavigator(
     ExperienceModal: {
       screen: ExperienceModal,
     },
-    CreateSchedule: {
-      screen: CreateSchedulePage,
-    },
+    
   },
   {
     navigationOptions: {
