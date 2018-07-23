@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, Switch, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import commonStyles from '../../../common/CommonStyleSheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class ScheduleDays extends Component {
+class ScheduleDays extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +16,7 @@ export default class ScheduleDays extends Component {
   onValueChange = () => {
     this.setState({
       daysOn: !this.state.daysOn
-    })
+    });
   }
 
   renderSlots = (item) => {
@@ -36,16 +38,17 @@ export default class ScheduleDays extends Component {
   }
 
   render() {
+    const daySlot = this.props.profileObj.schedules[this.props.dayName];
     return (
       <View style={styles.daysCard}>
         <View style={styles.leftCol}>
           <Text style={commonStyles.boldText}>{this.props.dayName}</Text>
           
-          { this.props.slotState.length === 0 ? 
+          { daySlot.length === 0 ? 
             (<Text>You have no slot.</Text>) : 
             (
               <FlatList
-                data={this.props.slotState}
+                data={daySlot}
                 renderItem={(item) => this.renderSlots(item)}
                 keyExtractor={(item, index) => index.toString()}
               />
@@ -105,3 +108,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+ScheduleDays.propTypes = {
+  profileObj: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  profileObj: state.completeProfileReducer
+});
+
+export default connect(mapStateToProps, {})(ScheduleDays);

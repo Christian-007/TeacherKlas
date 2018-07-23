@@ -22,6 +22,12 @@ export function removeSchedule(scheduleId) {
   };
 }
 
+export function addSchedule(dayName, schedule) {
+  return (dispatch) => {
+    dispatch(addSlot(dayName, schedule));
+  };
+}
+
 const uploadImage = (uri, name,  mime = 'image/jpeg') => {
   const storageRef = firebase.storage().ref('users'); // change this to be user ID
   const userFolder = storageRef.child(name);
@@ -119,6 +125,14 @@ const addSchedule = (schedule) => {
   return {
     type: t.ADD_SCHEDULE,
     id: nextSchedule++,
+    data: schedule
+  }
+}
+
+const addSlot = (dayName, schedule) => {
+  return {
+    type: t.ADD_SCHEDULE,
+    day: dayName,
     data: schedule
   }
 }

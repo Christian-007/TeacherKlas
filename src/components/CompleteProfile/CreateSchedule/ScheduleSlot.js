@@ -3,29 +3,41 @@ import { Text, View, Modal, TouchableOpacity, StyleSheet, FlatList } from 'react
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+import { addSchedule } from '../../../modules/actions/scheduleProfile';
 
-export default class ScheduleSlot extends Component {
+class ScheduleSlot extends Component {
   state = {
-    addedSlots: []
+    addedSlots: [],
+    selectedSlot: [],
   }
 
   addSlot = () => {
     this.setState(prevState => ({
-      ...prevState,
       addedSlots: [
         ...prevState.addedSlots,
         {starttime: "15.00", endtime: "16.30"}
+      ],
+      selectedSlot: [
+        ...prevState.selectedSlot,
+        {starttime: "15.00", endtime: "16.30"}
       ]
-    }), () => {
-       console.log('state', this.state);
-      }
-    );
+    }));
+  }
+
+  onConfirm = () => {
+    console.log('onConfirm ', this.state.addedSlots);
+    Object.values(this.state.addedSlots).map(slot => {
+      this.props.addSchedule(this.props.dayName, slot);
+    });
+    this.props.onHideModal();
   }
 
   showModal = () => {
     console.log('object', this.props.slotState);
     this.setState({
-      addedSlots: this.props.slotState
+      selectedSlot: this.props.slotState,
+      addedSlots: []
     })
   }
 
@@ -98,7 +110,7 @@ export default class ScheduleSlot extends Component {
         </TouchableOpacity>
         <FlatList
           extraData={this.state}
-          data={this.state.addedSlots}
+          data={this.state.selectedSlot}
           renderItem={(item) => this.renderSlots(item)}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -160,3 +172,5 @@ const modalStyle = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+export default connect(null, { addSchedule })(ScheduleSlot);

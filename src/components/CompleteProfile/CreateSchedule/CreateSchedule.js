@@ -61,7 +61,6 @@ class CreateSchedule extends Component {
   }
 
   setModalVisible(visible) {
-    console.log('WTF');
     this.setState({modalVisible: visible});
   }
 
@@ -127,7 +126,7 @@ class CreateSchedule extends Component {
       selectedDay: {
         dayName: day
       },
-      selectedSchedule: this.state.schedules[day],
+      selectedSchedule: this.props.profileObj.schedules[day],
     });
   }
 

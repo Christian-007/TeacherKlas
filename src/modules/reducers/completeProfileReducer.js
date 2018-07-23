@@ -42,12 +42,28 @@ const initialState = {
     endyear: "2012",
     studyHere: false
   }],
-  schedules: [{
-    id: 0,
-    starttime: "09:00",
-    endtime: "16:00",
-    day: "Monday"
-  }],
+  schedules: {
+    Monday: [{
+      starttime: '09.00',
+      endtime: '10.30',
+    },
+    {
+      starttime: '11.00',
+      endtime: '12.30',
+    }],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: []
+  }
+  // schedules: [{
+  //   id: 0,
+  //   starttime: "09:00",
+  //   endtime: "16:00",
+  //   day: "Monday"
+  // }],
 };
 
 const completeProfileReducer = (state = initialState, action) => {
@@ -126,17 +142,31 @@ const completeProfileReducer = (state = initialState, action) => {
       };
     
     case t.ADD_SCHEDULE:
+      // return {
+      //   ...state,
+      //   schedules: [
+      //     ...state.schedules,
+      //     {
+      //       id: action.id,
+      //       starttime: action.data.starttime,
+      //       endtime: action.data.endtime,
+      //       day: action.data.day,
+      //     }
+      //   ]
+      // };
+      const day = action.day;
       return {
         ...state,
-        schedules: [
+        schedules: {
           ...state.schedules,
-          {
-            id: action.id,
-            starttime: action.data.starttime,
-            endtime: action.data.endtime,
-            day: action.data.day,
-          }
-        ]
+          [day]: [
+            ...state.schedules[day],
+            {
+              starttime: action.data.starttime,
+              endtime: action.data.endtime,
+            }
+          ]
+        }
       };
     
     case t.UPDATE_SCHEDULE:
