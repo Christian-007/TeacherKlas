@@ -8,16 +8,11 @@ import { addSchedule } from '../../../modules/actions/scheduleProfile';
 
 class ScheduleSlot extends Component {
   state = {
-    addedSlots: [],
     selectedSlot: [],
   }
 
   addSlot = () => {
     this.setState(prevState => ({
-      addedSlots: [
-        ...prevState.addedSlots,
-        {starttime: "15.00", endtime: "16.30"}
-      ],
       selectedSlot: [
         ...prevState.selectedSlot,
         {starttime: "15.00", endtime: "16.30"}
@@ -26,10 +21,8 @@ class ScheduleSlot extends Component {
   }
 
   onConfirm = () => {
-    console.log('onConfirm ', this.state.addedSlots);
-    Object.values(this.state.addedSlots).map(slot => {
-      this.props.addSchedule(this.props.dayName, slot);
-    });
+    console.log('onConfirm ', this.state.selectedSlot);
+    this.props.addSchedule(this.props.dayName, this.state.selectedSlot);
     this.props.onHideModal();
   }
 
@@ -37,8 +30,27 @@ class ScheduleSlot extends Component {
     console.log('object', this.props.slotState);
     this.setState({
       selectedSlot: this.props.slotState,
-      addedSlots: []
     })
+  }
+  
+  changeTime = (selectedIndex) => {
+    const newTime = {starttime: "13.00", endtime: "14.30"}; // change this to be dynamic
+    this.setState(prevState => ({
+      ...prevState,
+      selectedSlot: prevState.selectedSlot.map((slot, index) => {
+        // not the object to be updated
+        if(index !== selectedIndex) {
+          return slot;
+        }
+
+        // update object
+        return {
+          ...slot,
+          ...newTime
+        };   
+      })
+    }));
+    console.log('selectedIndex', this.state.selectedSlot[selectedIndex]);
   }
 
   renderSlots = (item) => {
@@ -49,7 +61,9 @@ class ScheduleSlot extends Component {
             <Text style={[commonStyles.boldText, {fontSize: 10}]}>SLOT {item.index+1}</Text>
           </View>
           <View style={modalStyle.slotWrapper}>
-            <Text style={commonStyles.fontLato}>{item.item.starttime}</Text>
+            <TouchableOpacity onPress={() => this.changeTime(item.index)}>
+              <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc'}]}>{item.item.starttime}</Text>
+            </TouchableOpacity>
             <Ionicon 
               name="ios-arrow-round-forward-outline"
               size={30} 

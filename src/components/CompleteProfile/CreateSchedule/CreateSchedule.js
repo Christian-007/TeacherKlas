@@ -35,22 +35,6 @@ class CreateSchedule extends Component {
       selectedDay: {
         dayName: ''
       },
-      schedules: {
-        Monday: [{
-          starttime: '09.00',
-          endtime: '10.30',
-        },
-        {
-          starttime: '11.00',
-          endtime: '12.30',
-        }],
-        Tuesday: [],
-        Wednesday: [],
-        Thursday: [],
-        Friday: [],
-        Saturday: [],
-        Sunday: []
-      },
       selectedSchedule: [],
       disableSubmit: false,
       loading: false,
@@ -126,25 +110,8 @@ class CreateSchedule extends Component {
       selectedDay: {
         dayName: day
       },
-      selectedSchedule: this.props.profileObj.schedules[day],
+      selectedSchedule: this.props.profileObj.schedules[day].slots,
     });
-  }
-
-  onAddSlot(dayName) {
-    console.log('number', dayName);
-    this.setState(prevState => ({
-      ...prevState,
-      schedules: {
-        ...prevState.schedules,
-        [dayName]: [
-          ...prevState.schedules[dayName],
-          {
-            starttime: "13.00",
-            endtime: "14.30"
-          }
-        ]
-      }
-    }));
   }
 
   render() {
@@ -163,7 +130,6 @@ class CreateSchedule extends Component {
           dayName={this.state.selectedDay.dayName}
           slotState={this.state.selectedSchedule}
           onChange={(key, value) => this.handleChange(key,value)}
-          onAddSlot={(dayName) => this.onAddSlot(dayName)}
         />
         <ScrollView>
           <View style={styles.centerTitle}>
@@ -183,37 +149,30 @@ class CreateSchedule extends Component {
           <ScheduleDays
             onEdit={() => this.onEdit("Monday")}
             dayName="Monday"
-            slotState={this.state.schedules["Monday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Tuesday")}
             dayName="Tuesday"
-            slotState={this.state.schedules["Tuesday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Wednesday")}
             dayName="Wednesday"
-            slotState={this.state.schedules["Wednesday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Thursday")}
             dayName="Thursday"
-            slotState={this.state.schedules["Thursday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Friday")}
             dayName="Friday"
-            slotState={this.state.schedules["Friday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Saturday")}
             dayName="Saturday"
-            slotState={this.state.schedules["Saturday"]}
           />
           <ScheduleDays
             onEdit={() => this.onEdit("Sunday")}
             dayName="Sunday"
-            slotState={this.state.schedules["Sunday"]}
           />
           {/* <Form style={[styles.inputWrapper, {marginTop: 30}]}>
             <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>

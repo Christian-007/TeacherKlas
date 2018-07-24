@@ -28,6 +28,12 @@ export function addSchedule(dayName, schedule) {
   };
 }
 
+export function adjustDayStatus(dayName, value) {
+  return (dispatch) => {
+    dispatch(changeDayStatus(dayName, value));
+  };
+}
+
 const uploadImage = (uri, name,  mime = 'image/jpeg') => {
   const storageRef = firebase.storage().ref('users'); // change this to be user ID
   const userFolder = storageRef.child(name);
@@ -134,6 +140,14 @@ const addSlot = (dayName, schedule) => {
     type: t.ADD_SCHEDULE,
     day: dayName,
     data: schedule
+  }
+}
+
+const changeDayStatus = (dayName, value) => {
+  return {
+    type: t.CHANGE_DAY_STATUS,
+    day: dayName,
+    data: value
   }
 }
 

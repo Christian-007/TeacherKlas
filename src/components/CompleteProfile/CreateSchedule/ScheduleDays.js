@@ -3,20 +3,13 @@ import { Text, View, Switch, TouchableOpacity, StyleSheet, FlatList } from 'reac
 import commonStyles from '../../../common/CommonStyleSheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
+import { adjustDayStatus } from '../../../modules/actions/scheduleProfile';
 import PropTypes from 'prop-types';
 
 class ScheduleDays extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      daysOn: false,
-    }
-  }
-
-  onValueChange = () => {
-    this.setState({
-      daysOn: !this.state.daysOn
-    });
+  onSwitchDayStatus = () => {
+    const dayStatus = this.props.profileObj.schedules[this.props.dayName].isActive;
+    this.props.adjustDayStatus(this.props.dayName, !dayStatus);
   }
 
   renderSlots = (item) => {
@@ -44,11 +37,11 @@ class ScheduleDays extends Component {
         <View style={styles.leftCol}>
           <Text style={commonStyles.boldText}>{this.props.dayName}</Text>
           
-          { daySlot.length === 0 ? 
+          { daySlot.slots.length === 0 ? 
             (<Text>You have no slot.</Text>) : 
             (
               <FlatList
-                data={daySlot}
+                data={daySlot.slots}
                 renderItem={(item) => this.renderSlots(item)}
                 keyExtractor={(item, index) => index.toString()}
               />
@@ -57,8 +50,8 @@ class ScheduleDays extends Component {
         </View> 
         <View style={styles.rightCol}>
           <Switch 
-            onValueChange={this.onValueChange}
-            value={this.state.daysOn} />
+            onValueChange={this.onSwitchDayStatus}
+            value={daySlot.isActive} />
           <TouchableOpacity 
             onPress={this.props.onEdit}
             style={{marginTop: 10, flexDirection: 'row', alignItems: 'center'}}
@@ -117,4 +110,4 @@ const mapStateToProps = (state) => ({
   profileObj: state.completeProfileReducer
 });
 
-export default connect(mapStateToProps, {})(ScheduleDays);
+export default connect(mapStateToProps, { adjustDayStatus })(ScheduleDays);

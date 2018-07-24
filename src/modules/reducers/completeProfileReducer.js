@@ -43,20 +43,43 @@ const initialState = {
     studyHere: false
   }],
   schedules: {
-    Monday: [{
-      starttime: '09.00',
-      endtime: '10.30',
+    Monday: {
+      isActive: true,
+      slots:[
+        {
+          starttime: '09.00',
+          endtime: '10.30',
+        },
+        {
+          starttime: '11.00',
+          endtime: '12.30',
+        }
+      ]
     },
-    {
-      starttime: '11.00',
-      endtime: '12.30',
-    }],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-    Sunday: []
+    Tuesday: {
+      isActive: false,
+      slots:[]
+    },
+    Wednesday: {
+      isActive: false,
+      slots:[]
+    },
+    Thursday: {
+      isActive: false,
+      slots:[]
+    },
+    Friday: {
+      isActive: false,
+      slots:[]
+    },
+    Saturday: {
+      isActive: false,
+      slots:[]
+    },
+    Sunday: {
+      isActive: false,
+      slots:[]
+    }
   }
   // schedules: [{
   //   id: 0,
@@ -142,30 +165,27 @@ const completeProfileReducer = (state = initialState, action) => {
       };
     
     case t.ADD_SCHEDULE:
-      // return {
-      //   ...state,
-      //   schedules: [
-      //     ...state.schedules,
-      //     {
-      //       id: action.id,
-      //       starttime: action.data.starttime,
-      //       endtime: action.data.endtime,
-      //       day: action.data.day,
-      //     }
-      //   ]
-      // };
       const day = action.day;
       return {
         ...state,
         schedules: {
           ...state.schedules,
-          [day]: [
+          [day]: {
             ...state.schedules[day],
-            {
-              starttime: action.data.starttime,
-              endtime: action.data.endtime,
-            }
-          ]
+            slots: action.data
+          }
+        }
+      };
+    
+    case t.CHANGE_DAY_STATUS:
+      return {
+        ...state,
+        schedules: {
+          ...state.schedules,
+          [action.day]: {
+            ...state.schedules[action.day],
+            isActive: action.data
+          }
         }
       };
     
