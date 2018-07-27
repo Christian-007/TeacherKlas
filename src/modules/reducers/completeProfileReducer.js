@@ -47,13 +47,20 @@ const initialState = {
       isActive: true,
       slots:[
         {
-          starttime: '09.00',
-          endtime: '10.30',
-        },
-        {
           starttime: '11.00',
           endtime: '12.30',
-        }
+          minutes: 660,
+        },
+        {
+          starttime: '09.00',
+          endtime: '10.30',
+          minutes: 540,
+        },
+        {
+          starttime: '18.00',
+          endtime: '19.30',
+          minutes: 1080,
+        },
       ]
     },
     Tuesday: {

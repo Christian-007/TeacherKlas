@@ -41,7 +41,7 @@ class ScheduleDays extends Component {
             (<Text>You have no slot.</Text>) : 
             (
               <FlatList
-                data={daySlot.slots}
+                data={daySlot.slots.sort((a,b) => a.minutes - b.minutes)}
                 renderItem={(item) => this.renderSlots(item)}
                 keyExtractor={(item, index) => index.toString()}
               />

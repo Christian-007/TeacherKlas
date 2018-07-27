@@ -5,17 +5,58 @@ import commonStyles from '../../../common/CommonStyleSheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { addSchedule } from '../../../modules/actions/scheduleProfile';
+import moment from 'moment';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 class ScheduleSlot extends Component {
   state = {
     selectedSlot: [],
+    startDateTimePickerVisible: false,
+    endDateTimePickerVisible: false,
+    selectedTime: 0,
   }
+
+  momentMinute = (time) => {
+    return moment.duration(time+':00').asMinutes();
+  }
+
+  momentAddTime = (date) => {
+    return moment(date).add(90, 'minutes');
+  }
+
+  formatToHourMinute = (time) => {
+    return time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  }
+
+  showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
+  showEndDateTimePicker = (index) => {
+    this.setState({ 
+      endDateTimePickerVisible: true,
+      selectedTime: index
+    });
+  }
+
+  hideStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: false });
+  hideEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: false });
+
+  handleStartDatePicked = (date) => {
+    console.log('A date has been picked: ', date);
+    // this.onValueChange('starttime', date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+    this.hideStartDateTimePicker();
+  };
+
+  handleEndDatePicked = (date) => {
+    const endTime = this.momentAddTime(date);
+    console.log('A date has been picked: ', date);
+    this.changeTime(this.state.selectedTime, this.formatToHourMinute(date), this.formatToHourMinute(endTime._d));
+    this.hideEndDateTimePicker();
+  };
 
   addSlot = () => {
     this.setState(prevState => ({
       selectedSlot: [
         ...prevState.selectedSlot,
-        {starttime: "15.00", endtime: "16.30"}
+        {starttime: "15.00", endtime: "16.30", minutes: 900}
       ]
     }));
   }
@@ -33,8 +74,14 @@ class ScheduleSlot extends Component {
     })
   }
   
-  changeTime = (selectedIndex) => {
-    const newTime = {starttime: "13.00", endtime: "14.30"}; // change this to be dynamic
+  changeTime = (selectedIndex, startTime, endTime) => {
+    const newTime = {
+      starttime: startTime, 
+      endtime: endTime, 
+      minutes: this.momentMinute(startTime),
+      endMinutes: this.momentMinute(endTime),
+    };
+
     this.setState(prevState => ({
       ...prevState,
       selectedSlot: prevState.selectedSlot.map((slot, index) => {
@@ -50,7 +97,7 @@ class ScheduleSlot extends Component {
         };   
       })
     }));
-    console.log('selectedIndex', this.state.selectedSlot[selectedIndex]);
+    console.log('state', this.state);
   }
 
   renderSlots = (item) => {
@@ -61,7 +108,7 @@ class ScheduleSlot extends Component {
             <Text style={[commonStyles.boldText, {fontSize: 10}]}>SLOT {item.index+1}</Text>
           </View>
           <View style={modalStyle.slotWrapper}>
-            <TouchableOpacity onPress={() => this.changeTime(item.index)}>
+            <TouchableOpacity onPress={() => this.showEndDateTimePicker(item.index)}>
               <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc'}]}>{item.item.starttime}</Text>
             </TouchableOpacity>
             <Ionicon 
@@ -122,9 +169,17 @@ class ScheduleSlot extends Component {
         <TouchableOpacity style={[modalStyle.daysCard, {backgroundColor: '#fff'}]} onPress={this.addSlot}>
           <Text style={[commonStyles.boldText, {letterSpacing: 1, color: '#00b16e', fontSize: 12}]}>+ ADD SLOT</Text>
         </TouchableOpacity>
+        <DateTimePicker
+          isVisible={this.state.endDateTimePickerVisible}
+          onConfirm={this.handleEndDatePicked}
+          onCancel={this.hideEndDateTimePicker}
+          mode='time'
+          titleIOS='Pick end time'
+          date={new Date()}
+        />
         <FlatList
           extraData={this.state}
-          data={this.state.selectedSlot}
+          data={this.state.selectedSlot.sort((a,b) => a.minutes - b.minutes)}
           renderItem={(item) => this.renderSlots(item)}
           keyExtractor={(item, index) => index.toString()}
         />
