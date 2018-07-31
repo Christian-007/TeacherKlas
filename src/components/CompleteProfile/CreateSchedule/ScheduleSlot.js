@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Modal, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { Text, View, Modal, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -14,6 +14,16 @@ class ScheduleSlot extends Component {
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
     selectedTime: 0,
+    selectedDateTime: new Date()
+  }
+
+  getSelectedTime = () => {
+    const time = this.state.selectedSlot[this.state.selectedTime];
+    // const getHour = moment.duration(time.minutes, 'minutes').get('hours');
+    // const getMinutes = moment.duration(time.minutes, 'minutes').get('minutes');
+    // const dateFormat = new Date(moment().get('year'), moment().get('month'), moment().get('date'), getHour, getMinutes);
+    // console.log('dateFormat', time);
+    return new Date(moment().get('year'), moment().get('month'), moment().get('date'), 10, 0);
   }
 
   momentMinute = (time) => {
@@ -30,9 +40,14 @@ class ScheduleSlot extends Component {
 
   showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
   showEndDateTimePicker = (index) => {
+    const time = this.state.selectedSlot[index];
+    const getHour = moment.duration(time.minutes, 'minutes').get('hours');
+    const getMinutes = moment.duration(time.minutes, 'minutes').get('minutes');
+    const dateFormat = new Date(moment().get('year'), moment().get('month'), moment().get('date'), getHour, getMinutes);
     this.setState({ 
       endDateTimePickerVisible: true,
-      selectedTime: index
+      selectedTime: index,
+      selectedDateTime: dateFormat
     });
   }
 
@@ -98,6 +113,38 @@ class ScheduleSlot extends Component {
       })
     }));
     console.log('state', this.state);
+  }
+
+  renderAddSlot = () => {
+    return (
+      <View style={{paddingTop: 15, paddingLeft: 15, paddingRight: 15}}>
+        <View style={modalStyle.addSlotCard}>
+            <View style={modalStyle.leftCol}>
+              <Text style={[commonStyles.boldText, {fontSize: 12, color: '#00b16e'}]}>ADD SLOT</Text>
+              <View style={modalStyle.slotWrapper}>
+                <TouchableOpacity onPress={() => this.showEndDateTimePicker(item.index)}>
+                  <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc', fontSize: 12}]}>Start time</Text>
+                </TouchableOpacity>
+                <Ionicon 
+                  name="ios-arrow-round-forward-outline"
+                  size={30} 
+                  color="#00b16e" 
+                  style={{marginLeft: 10, marginRight: 10}}
+                />
+                <Text style={[commonStyles.fontLato, {fontSize: 12}]}>End time</Text>
+              </View>
+            </View> 
+            <View style={modalStyle.rightCol}>
+              <TouchableOpacity 
+                onPress={this.addSlot}
+                style={{backgroundColor: '#00b16e', borderRadius: 4, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5}}
+              >
+                <Text style={{color: '#fff'}}>+ Add</Text>
+              </TouchableOpacity>
+            </View> 
+          </View>
+        </View>
+      )
   }
 
   renderSlots = (item) => {
@@ -166,23 +213,27 @@ class ScheduleSlot extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={[modalStyle.daysCard, {backgroundColor: '#fff'}]} onPress={this.addSlot}>
+        {/* <TouchableOpacity style={[modalStyle.daysCard, {backgroundColor: '#fff'}]} onPress={this.addSlot}>
           <Text style={[commonStyles.boldText, {letterSpacing: 1, color: '#00b16e', fontSize: 12}]}>+ ADD SLOT</Text>
-        </TouchableOpacity>
-        <DateTimePicker
-          isVisible={this.state.endDateTimePickerVisible}
-          onConfirm={this.handleEndDatePicked}
-          onCancel={this.hideEndDateTimePicker}
-          mode='time'
-          titleIOS='Pick end time'
-          date={new Date()}
-        />
-        <FlatList
-          extraData={this.state}
-          data={this.state.selectedSlot.sort((a,b) => a.minutes - b.minutes)}
-          renderItem={(item) => this.renderSlots(item)}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        </TouchableOpacity> */}
+        <ScrollView>
+          {this.renderAddSlot()}
+          <Text style={[commonStyles.boldText, {margin: 20, letterSpacing: 1}]}>TIME SLOT</Text>
+          <DateTimePicker
+            isVisible={this.state.endDateTimePickerVisible}
+            onConfirm={this.handleEndDatePicked}
+            onCancel={this.hideEndDateTimePicker}
+            mode='time'
+            titleIOS='Pick end time'
+            date={this.state.selectedDateTime}
+          />
+          <FlatList
+            extraData={this.state}
+            data={this.state.selectedSlot.sort((a,b) => a.minutes - b.minutes)}
+            renderItem={(item) => this.renderSlots(item)}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
       </Modal>
     )
   }
@@ -211,6 +262,12 @@ const modalStyle = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 1,
     color: '#00b16e',
+  },
+  addSlotCard: {
+    backgroundColor: '#fafafa',
+    padding: 20,
+    flexDirection: 'row',
+    borderLeftWidth: 3, borderLeftColor: '#00b16e'
   },
   daysCard: {
     backgroundColor: '#fafafa',
