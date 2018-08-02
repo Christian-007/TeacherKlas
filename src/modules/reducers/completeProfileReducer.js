@@ -49,17 +49,20 @@ const initialState = {
         {
           starttime: '11.00',
           endtime: '12.30',
-          minutes: 660,
+          startMinutes: 660,
+          endMinutes: 750,
         },
         {
           starttime: '09.00',
           endtime: '10.30',
-          minutes: 540,
+          startMinutes: 540,
+          endMinutes: 630,
         },
         {
           starttime: '18.00',
           endtime: '19.30',
-          minutes: 1080,
+          startMinutes: 1080,
+          endMinutes: 1170,
         },
       ]
     },

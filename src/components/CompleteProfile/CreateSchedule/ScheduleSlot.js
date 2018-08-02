@@ -14,16 +14,11 @@ class ScheduleSlot extends Component {
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
     selectedTime: 0,
-    selectedDateTime: new Date()
-  }
-
-  getSelectedTime = () => {
-    const time = this.state.selectedSlot[this.state.selectedTime];
-    // const getHour = moment.duration(time.minutes, 'minutes').get('hours');
-    // const getMinutes = moment.duration(time.minutes, 'minutes').get('minutes');
-    // const dateFormat = new Date(moment().get('year'), moment().get('month'), moment().get('date'), getHour, getMinutes);
-    // console.log('dateFormat', time);
-    return new Date(moment().get('year'), moment().get('month'), moment().get('date'), 10, 0);
+    selectedDateTime: new Date(),
+    isAddingSlot: false,
+    addSlotTime: null,
+    disableSubmit: true,
+    bgColor: '#ccc',
   }
 
   momentMinute = (time) => {
@@ -38,11 +33,30 @@ class ScheduleSlot extends Component {
     return time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 
-  showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
+  showAddSlotTimePicker = () => {
+    if (this.state.addSlotTime == null) {
+      this.setState({ 
+        endDateTimePickerVisible: true,
+        selectedDateTime: new Date(),
+        isAddingSlot: true,
+      })
+    } else {
+      const time = this.state.addSlotTime;
+      const getHour = moment.duration(time.startMinutes, 'minutes').get('hours');
+      const getMinutes = moment.duration(time.startMinutes, 'minutes').get('minutes');
+      const dateFormat = new Date(moment().get('year'), moment().get('month'), moment().get('date'), getHour, getMinutes);
+      this.setState({ 
+        endDateTimePickerVisible: true,
+        selectedDateTime: dateFormat,
+        isAddingSlot: true,
+      })
+    }
+  };
+
   showEndDateTimePicker = (index) => {
     const time = this.state.selectedSlot[index];
-    const getHour = moment.duration(time.minutes, 'minutes').get('hours');
-    const getMinutes = moment.duration(time.minutes, 'minutes').get('minutes');
+    const getHour = moment.duration(time.startMinutes, 'minutes').get('hours');
+    const getMinutes = moment.duration(time.startMinutes, 'minutes').get('minutes');
     const dateFormat = new Date(moment().get('year'), moment().get('month'), moment().get('date'), getHour, getMinutes);
     this.setState({ 
       endDateTimePickerVisible: true,
@@ -51,29 +65,68 @@ class ScheduleSlot extends Component {
     });
   }
 
-  hideStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: false });
-  hideEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: false });
-
-  handleStartDatePicked = (date) => {
-    console.log('A date has been picked: ', date);
-    // this.onValueChange('starttime', date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
-    this.hideStartDateTimePicker();
-  };
+  hideEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: false, isAddingSlot: false });
 
   handleEndDatePicked = (date) => {
     const endTime = this.momentAddTime(date);
     console.log('A date has been picked: ', date);
-    this.changeTime(this.state.selectedTime, this.formatToHourMinute(date), this.formatToHourMinute(endTime._d));
+    if (this.state.isAddingSlot) {
+      this.changeAddSlotTime(this.formatToHourMinute(date), this.formatToHourMinute(endTime._d));
+    } else {
+      this.changeTime(this.state.selectedTime, this.formatToHourMinute(date), this.formatToHourMinute(endTime._d));
+    }
     this.hideEndDateTimePicker();
   };
 
+  validateSlots = (time = null) => {
+    let newStartMin, newEndMin;
+
+    if (time == null) {
+      newStartMin = this.state.addSlotTime.startMinutes;
+      newEndMin = this.state.addSlotTime.endMinutes;
+    } else {
+      newStartMin = time.startMinutes;
+      newEndMin = time.endMinutes;
+    }
+
+    return (slot, index) => {
+      if (newEndMin <= slot.startMinutes-30) {
+        if (index === 0) {
+          return true;
+        } else {
+          if (newStartMin >= this.state.selectedSlot[index-1].endMinutes+30) {
+            return true;
+          }
+        }
+      } else {
+        if (index === this.state.selectedSlot.length-1 && newStartMin >= slot.endMinutes+30) {
+          return true;
+        }
+        return false;
+      }
+    }
+
+    
+  }
+
   addSlot = () => {
-    this.setState(prevState => ({
-      selectedSlot: [
-        ...prevState.selectedSlot,
-        {starttime: "15.00", endtime: "16.30", minutes: 900}
-      ]
-    }));
+    const slotTimes = this.state.selectedSlot;
+    let isValidSlot = slotTimes.some(this.validateSlots);
+
+    if (isValidSlot) {
+      this.setState(prevState => ({
+        selectedSlot: [
+          ...prevState.selectedSlot,
+          this.state.addSlotTime
+        ],
+        addSlotTime: null,
+        disableSubmit: true,
+      }), () => {
+        console.log(this.state);
+      });
+    } else {
+      console.log('INVALID ADD TIME SLOT');
+    }
   }
 
   onConfirm = () => {
@@ -86,44 +139,69 @@ class ScheduleSlot extends Component {
     console.log('object', this.props.slotState);
     this.setState({
       selectedSlot: this.props.slotState,
+      addSlotTime: null,
     })
+  }
+
+  changeAddSlotTime = (startTime, endTime) => {
+    const newTime = {
+      starttime: startTime, 
+      endtime: endTime, 
+      startMinutes: this.momentMinute(startTime),
+      endMinutes: this.momentMinute(endTime),
+    };
+
+    this.setState({ addSlotTime: newTime, disableSubmit: false });
   }
   
   changeTime = (selectedIndex, startTime, endTime) => {
     const newTime = {
       starttime: startTime, 
       endtime: endTime, 
-      minutes: this.momentMinute(startTime),
+      startMinutes: this.momentMinute(startTime),
       endMinutes: this.momentMinute(endTime),
     };
 
-    this.setState(prevState => ({
-      ...prevState,
-      selectedSlot: prevState.selectedSlot.map((slot, index) => {
-        // not the object to be updated
-        if(index !== selectedIndex) {
-          return slot;
-        }
+    // Filter the slot times to NOT INCLUDE the SELECTED TIME SLOT
+    const slotTimes = this.state.selectedSlot.filter((slot, index) => index !== selectedIndex);
+    let isValidSlot = slotTimes.some(this.validateSlots(newTime));
 
-        // update object
-        return {
-          ...slot,
-          ...newTime
-        };   
-      })
-    }));
+    if (isValidSlot) {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedSlot: prevState.selectedSlot.map((slot, index) => {
+          // not the object to be updated
+          if(index !== selectedIndex) {
+            return slot;
+          }
+
+          // update object
+          return {
+            ...slot,
+            ...newTime
+          };   
+        })
+      }));
+    } else {
+      console.log('INVALID CHANGE TIME SLOT');
+    }
+
+    
     console.log('state', this.state);
   }
 
   renderAddSlot = () => {
+    const disableSubmit = this.state.disableSubmit;
     return (
       <View style={{paddingTop: 15, paddingLeft: 15, paddingRight: 15}}>
         <View style={modalStyle.addSlotCard}>
             <View style={modalStyle.leftCol}>
               <Text style={[commonStyles.boldText, {fontSize: 12, color: '#00b16e'}]}>ADD SLOT</Text>
               <View style={modalStyle.slotWrapper}>
-                <TouchableOpacity onPress={() => this.showEndDateTimePicker(item.index)}>
-                  <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc', fontSize: 12}]}>Start time</Text>
+                <TouchableOpacity onPress={() => this.showAddSlotTimePicker()}>
+                <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc', fontSize: 12}]}>
+                  {this.state.addSlotTime === null ? 'Start time' : this.state.addSlotTime.starttime}
+                </Text>
                 </TouchableOpacity>
                 <Ionicon 
                   name="ios-arrow-round-forward-outline"
@@ -131,13 +209,16 @@ class ScheduleSlot extends Component {
                   color="#00b16e" 
                   style={{marginLeft: 10, marginRight: 10}}
                 />
-                <Text style={[commonStyles.fontLato, {fontSize: 12}]}>End time</Text>
+                <Text style={[commonStyles.fontLato, {fontSize: 12}]}>
+                  {this.state.addSlotTime === null ? 'End time' : this.state.addSlotTime.endtime}
+                </Text>
               </View>
             </View> 
             <View style={modalStyle.rightCol}>
               <TouchableOpacity 
                 onPress={this.addSlot}
-                style={{backgroundColor: '#00b16e', borderRadius: 4, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5}}
+                disabled={disableSubmit}
+                style={{backgroundColor: disableSubmit ? this.state.bgColor : '#00b16e', borderRadius: 4, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5}}
               >
                 <Text style={{color: '#fff'}}>+ Add</Text>
               </TouchableOpacity>
@@ -213,9 +294,6 @@ class ScheduleSlot extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <TouchableOpacity style={[modalStyle.daysCard, {backgroundColor: '#fff'}]} onPress={this.addSlot}>
-          <Text style={[commonStyles.boldText, {letterSpacing: 1, color: '#00b16e', fontSize: 12}]}>+ ADD SLOT</Text>
-        </TouchableOpacity> */}
         <ScrollView>
           {this.renderAddSlot()}
           <Text style={[commonStyles.boldText, {margin: 20, letterSpacing: 1}]}>TIME SLOT</Text>
@@ -229,7 +307,7 @@ class ScheduleSlot extends Component {
           />
           <FlatList
             extraData={this.state}
-            data={this.state.selectedSlot.sort((a,b) => a.minutes - b.minutes)}
+            data={this.state.selectedSlot.sort((a,b) => a.startMinutes - b.startMinutes)}
             renderItem={(item) => this.renderSlots(item)}
             keyExtractor={(item, index) => index.toString()}
           />
