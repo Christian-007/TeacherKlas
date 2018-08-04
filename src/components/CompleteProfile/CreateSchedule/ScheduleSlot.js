@@ -89,17 +89,17 @@ class ScheduleSlot extends Component {
       newEndMin = time.endMinutes;
     }
 
-    return (slot, index) => {
+    return (slot, index, array) => {
       if (newEndMin <= slot.startMinutes-30) {
         if (index === 0) {
           return true;
         } else {
-          if (newStartMin >= this.state.selectedSlot[index-1].endMinutes+30) {
+          if (newStartMin >= array[index-1].endMinutes+30) {
             return true;
           }
         }
       } else {
-        if (index === this.state.selectedSlot.length-1 && newStartMin >= slot.endMinutes+30) {
+        if (index === array.length-1 && newStartMin >= slot.endMinutes+30) {
           return true;
         }
         return false;
@@ -111,9 +111,9 @@ class ScheduleSlot extends Component {
 
   addSlot = () => {
     const slotTimes = this.state.selectedSlot;
-    let isValidSlot = slotTimes.some(this.validateSlots);
+    let isValidSlot = slotTimes.some(this.validateSlots());
 
-    if (isValidSlot) {
+    if (isValidSlot || slotTimes.length === 0) {
       this.setState(prevState => ({
         selectedSlot: [
           ...prevState.selectedSlot,
@@ -140,6 +140,7 @@ class ScheduleSlot extends Component {
     this.setState({
       selectedSlot: this.props.slotState,
       addSlotTime: null,
+      disableSubmit: true,
     })
   }
 
