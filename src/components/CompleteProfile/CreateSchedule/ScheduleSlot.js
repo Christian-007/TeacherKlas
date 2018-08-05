@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, Modal, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
+import styles from '../Stylesheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { addSchedule } from '../../../modules/actions/scheduleProfile';
+import { addSchedule, removeSchedule } from '../../../modules/actions/scheduleProfile';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -129,6 +130,14 @@ class ScheduleSlot extends Component {
     }
   }
 
+  deleteSlot = (scheduleId) => {
+    this.setState(prevState => ({
+      selectedSlot: prevState.selectedSlot.filter((slot, index) => index !== scheduleId),
+    }), () => {
+      console.log(this.state);
+    });
+  }
+
   onConfirm = () => {
     console.log('onConfirm ', this.state.selectedSlot);
     this.props.addSchedule(this.props.dayName, this.state.selectedSlot);
@@ -251,7 +260,7 @@ class ScheduleSlot extends Component {
         </View> 
         <View style={modalStyle.rightCol}>
           <TouchableOpacity 
-            onPress={this.props.onEdit}
+            onPress={() => this.deleteSlot(item.index)}
             style={{marginTop: 10, flexDirection: 'row', alignItems: 'center'}}
           >
             <Material 
@@ -291,7 +300,7 @@ class ScheduleSlot extends Component {
           <Text style={modalStyle.titleStyle}>{this.props.dayName.toUpperCase()}</Text>
           <View style={{flex: 1, flexDirection: 'row',justifyContent: 'flex-end',}}>
             <TouchableOpacity onPress={this.onConfirm}>
-              <Text style={modalStyle.prev}>CONFIRM</Text>
+              <Text style={commonStyles.textTeacher}>CONFIRM</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -306,12 +315,25 @@ class ScheduleSlot extends Component {
             titleIOS='Pick end time'
             date={this.state.selectedDateTime}
           />
-          <FlatList
-            extraData={this.state}
-            data={this.state.selectedSlot.sort((a,b) => a.startMinutes - b.startMinutes)}
-            renderItem={(item) => this.renderSlots(item)}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          { this.state.selectedSlot.length === 0 ?
+          (
+            <View style={{paddingLeft: 15, paddingRight: 15}}>
+              <Text style={[commonStyles.boldText, {borderWidth: 1, textAlign: 'center', padding: 15, color: '#d3d3d3', borderColor: '#d3d3d3', backgroundColor: '#fafafa', borderRadius: 4, borderStyle: 'dashed',}]}>
+                No time slot yet.
+              </Text>
+            </View>
+          ) 
+          :
+          (
+            <FlatList
+              extraData={this.state}
+              data={this.state.selectedSlot.sort((a,b) => a.startMinutes - b.startMinutes)}
+              renderItem={(item) => this.renderSlots(item)}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          )
+          }
+          
         </ScrollView>
       </Modal>
     )
@@ -327,6 +349,12 @@ const modalStyle = StyleSheet.create({
     borderBottomColor: '#f3f3f3',
     marginTop: 20,
     padding: 13,
+  },
+  tableWrapper: {
+    flexDirection: 'row',
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#eee',
   },
   titleStyle: {
     fontFamily: 'Lato-Regular',
@@ -378,4 +406,4 @@ const modalStyle = StyleSheet.create({
   }
 });
 
-export default connect(null, { addSchedule })(ScheduleSlot);
+export default connect(null, { addSchedule, removeSchedule })(ScheduleSlot);

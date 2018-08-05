@@ -47,16 +47,16 @@ const initialState = {
       isActive: true,
       slots:[
         {
-          starttime: '11.00',
-          endtime: '12.30',
-          startMinutes: 660,
-          endMinutes: 750,
-        },
-        {
           starttime: '09.00',
           endtime: '10.30',
           startMinutes: 540,
           endMinutes: 630,
+        },
+        {
+          starttime: '11.00',
+          endtime: '12.30',
+          startMinutes: 660,
+          endMinutes: 750,
         },
         {
           starttime: '18.00',
@@ -225,10 +225,17 @@ const completeProfileReducer = (state = initialState, action) => {
       };
     
     case t.DELETE_SCHEDULE:
+      const scheduleDay = action.dayName;
       const scheduleId = action.id;
       return {
         ...state,
-        schedules: state.schedules.filter(schedule => schedule.id !== scheduleId)
+        schedules: {
+          ...state.schedules,
+          [scheduleDay]: {
+            ...state.schedules[scheduleDay],
+            slots: state.schedules[scheduleDay].slots.filter((slot, index) => index !== scheduleId)
+          }
+        }
       };
 
     case t.DELETE_EXPERIENCE:

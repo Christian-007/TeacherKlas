@@ -16,9 +16,9 @@ export function adjustSchedule(schedule) {
   };
 }
 
-export function removeSchedule(scheduleId) {
+export function removeSchedule(scheduleId, scheduleName) {
   return (dispatch) => {
-    dispatch(deleteSchedule(scheduleId));
+    dispatch(deleteSchedule(scheduleId, scheduleName));
   };
 }
 
@@ -164,9 +164,12 @@ const updateSchedule = (schedule) => {
   }
 }
 
-const deleteSchedule = (scheduleId) => {
+const deleteSchedule = (scheduleId, scheduleName) => {
+  console.log('scheduleId:', scheduleId);
+  console.log('scheduleName:', scheduleName);
   return {
     type: t.DELETE_SCHEDULE,
+    dayName: scheduleName,
     id: scheduleId
   }
 }

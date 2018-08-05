@@ -14,11 +14,15 @@ import moment from 'moment';
 class Experience extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={[commonStyles.textTeacher, {paddingLeft: 20, fontSize: 16}]}>PREV</Text>
+        </TouchableOpacity>
+      ),
       headerRight: (
-        <Button
-          onPress={() => navigation.navigate("SignedIn")}
-          title="SKIP"
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("SignedIn")}>
+          <Text style={[commonStyles.textTeacher, {paddingRight: 20, fontSize: 16}]}>SKIP</Text>  
+        </TouchableOpacity>
       ),
     }
   };

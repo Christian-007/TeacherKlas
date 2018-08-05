@@ -40,4 +40,11 @@ export default ScaledSheet.create({
     fontSize: '12@ms',
     marginTop: 5,
   },
+  textTeacher: {
+    fontFamily: 'Lato-Regular',
+    fontWeight: '800',
+    fontSize: 12,
+    letterSpacing: 1,
+    color: '#00b16e',
+  }
 });

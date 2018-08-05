@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button, ScrollView, TextInput, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
+import { Text, View, Button, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { H3, Label, Input, Item , Form, Textarea} from 'native-base';
 import styles from '../Stylesheet';
 import commonStyles from '../../../common/CommonStyleSheet';
@@ -9,19 +9,21 @@ import { deleteSubject } from '../../../modules/actions';
 import { submitProfile } from '../../../modules/actions/scheduleProfile';
 import UserJourney from '../../../common/UserJourney';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
-import ScheduleModal from './ScheduleModal';
-import ScheduleTable from './ScheduleTable';
 import ScheduleDays from './ScheduleDays';
 import ScheduleSlot from './ScheduleSlot';
 
 class CreateSchedule extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={[commonStyles.textTeacher, {paddingLeft: 20, fontSize: 16}]}>PREV</Text>
+        </TouchableOpacity>
+      ),
       headerRight: (
-        <Button
-          onPress={() => navigation.navigate("SignedIn")}
-          title="SKIP"
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("SignedIn")}>
+          <Text style={[commonStyles.textTeacher, {paddingRight: 20, fontSize: 16}]}>SKIP</Text>  
+        </TouchableOpacity>
       ),
     }
   };
