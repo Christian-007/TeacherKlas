@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
-import { Text, View, Modal, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { Toast } from 'native-base';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
-import styles from '../Stylesheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { addSchedule, removeSchedule } from '../../../modules/actions/scheduleProfile';
 import moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-class ScheduleSlot extends Component {
+class SlotModal extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('dayName').toUpperCase(),
+      headerRight: (
+        <TouchableOpacity onPress={navigation.state.params.handleSave} style={{marginRight: 20}}>
+          <Text style={commonStyles.textTeacher}>SAVE</Text>
+        </TouchableOpacity>
+      )
+    }
+  };
+
   state = {
     selectedSlot: [],
     startDateTimePickerVisible: false,
@@ -20,6 +31,34 @@ class ScheduleSlot extends Component {
     addSlotTime: null,
     disableSubmit: true,
     bgColor: '#ccc',
+  }
+
+  onSave = () => {
+    console.log('onSave ', this.state.selectedSlot);
+    this.props.addSchedule(this.props.navigation.getParam('dayName'), this.state.selectedSlot);
+    Toast.show({
+      text: "Successfully saved time slot!",
+      buttonText: "Okay",
+      type: "success"
+    });
+    this.props.navigation.goBack();
+  }
+
+  componentWillMount() {
+    this.props.navigation.setParams({
+      handleSave: this.onSave,
+    });
+  }
+
+  componentDidMount() {
+    console.log('day', this.props.navigation.getParam('dayName'));
+    console.log('slots', this.props.navigation.getParam('slotState'));
+    
+    this.setState({
+      selectedSlot: this.props.navigation.getParam('slotState'),
+      addSlotTime: null,
+      disableSubmit: true,
+    })
   }
 
   momentMinute = (time) => {
@@ -125,6 +164,11 @@ class ScheduleSlot extends Component {
       }), () => {
         console.log(this.state);
       });
+      Toast.show({
+        text: "Successfully added time slot!",
+        buttonText: "Okay",
+        type: "success"
+      });
     } else {
       console.log('INVALID ADD TIME SLOT');
     }
@@ -135,22 +179,11 @@ class ScheduleSlot extends Component {
       selectedSlot: prevState.selectedSlot.filter((slot, index) => index !== scheduleId),
     }), () => {
       console.log(this.state);
+      Toast.show({
+        text: "Deleted a time slot!",
+        type: "danger"
+      });
     });
-  }
-
-  onConfirm = () => {
-    console.log('onConfirm ', this.state.selectedSlot);
-    this.props.addSchedule(this.props.dayName, this.state.selectedSlot);
-    this.props.onHideModal();
-  }
-
-  showModal = () => {
-    console.log('object', this.props.slotState);
-    this.setState({
-      selectedSlot: this.props.slotState,
-      addSlotTime: null,
-      disableSubmit: true,
-    })
   }
 
   changeAddSlotTime = (startTime, endTime) => {
@@ -194,9 +227,7 @@ class ScheduleSlot extends Component {
       }));
     } else {
       console.log('INVALID CHANGE TIME SLOT');
-    }
-
-    
+    }  
     console.log('state', this.state);
   }
 
@@ -205,37 +236,37 @@ class ScheduleSlot extends Component {
     return (
       <View style={{paddingTop: 15, paddingLeft: 15, paddingRight: 15}}>
         <View style={modalStyle.addSlotCard}>
-            <View style={modalStyle.leftCol}>
-              <Text style={[commonStyles.boldText, {fontSize: 12, color: '#00b16e'}]}>ADD SLOT</Text>
-              <View style={modalStyle.slotWrapper}>
-                <TouchableOpacity onPress={() => this.showAddSlotTimePicker()}>
-                <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc', fontSize: 12}]}>
-                  {this.state.addSlotTime === null ? 'Start time' : this.state.addSlotTime.starttime}
-                </Text>
-                </TouchableOpacity>
-                <Ionicon 
-                  name="ios-arrow-round-forward-outline"
-                  size={30} 
-                  color="#00b16e" 
-                  style={{marginLeft: 10, marginRight: 10}}
-                />
-                <Text style={[commonStyles.fontLato, {fontSize: 12}]}>
-                  {this.state.addSlotTime === null ? 'End time' : this.state.addSlotTime.endtime}
-                </Text>
-              </View>
-            </View> 
-            <View style={modalStyle.rightCol}>
-              <TouchableOpacity 
-                onPress={this.addSlot}
-                disabled={disableSubmit}
-                style={{backgroundColor: disableSubmit ? this.state.bgColor : '#00b16e', borderRadius: 4, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5}}
-              >
-                <Text style={{color: '#fff'}}>+ Add</Text>
+          <View style={modalStyle.leftCol}>
+            <Text style={[commonStyles.boldText, {fontSize: 12, color: '#00b16e'}]}>ADD SLOT</Text>
+            <View style={modalStyle.slotWrapper}>
+              <TouchableOpacity onPress={() => this.showAddSlotTimePicker()}>
+              <Text style={[commonStyles.fontLato, {backgroundColor: '#fff', padding: 10, borderWidth: 1, borderColor: '#ccc', fontSize: 12}]}>
+                {this.state.addSlotTime === null ? 'Start time' : this.state.addSlotTime.starttime}
+              </Text>
               </TouchableOpacity>
-            </View> 
-          </View>
+              <Ionicon 
+                name="ios-arrow-round-forward-outline"
+                size={30} 
+                color="#00b16e" 
+                style={{marginLeft: 10, marginRight: 10}}
+              />
+              <Text style={[commonStyles.fontLato, {fontSize: 12}]}>
+                {this.state.addSlotTime === null ? 'End time' : this.state.addSlotTime.endtime}
+              </Text>
+            </View>
+          </View> 
+          <View style={modalStyle.rightCol}>
+            <TouchableOpacity 
+              onPress={this.addSlot}
+              disabled={disableSubmit}
+              style={{backgroundColor: disableSubmit ? this.state.bgColor : '#00b16e', borderRadius: 4, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5}}
+            >
+              <Text style={{color: '#fff'}}>+ Add</Text>
+            </TouchableOpacity>
+          </View> 
         </View>
-      )
+      </View>
+    )
   }
 
   renderSlots = (item) => {
@@ -278,44 +309,20 @@ class ScheduleSlot extends Component {
 
   render() {
     return (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.props.modalVisible}
-        onShow={this.showModal}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-        }}>
-        <View style={modalStyle.headerBar}>
-          <View style={{flex: 1, flexDirection: 'row',justifyContent: 'flex-start',}}>
-            <TouchableOpacity onPress={this.props.onHideModal}>
-              <Material 
-                name="close"
-                backgroundColor="transparent"
-                size={20}
-                color="#828282" 
-              />
-            </TouchableOpacity>
-          </View>
-          <Text style={modalStyle.titleStyle}>{this.props.dayName.toUpperCase()}</Text>
-          <View style={{flex: 1, flexDirection: 'row',justifyContent: 'flex-end',}}>
-            <TouchableOpacity onPress={this.onConfirm}>
-              <Text style={commonStyles.textTeacher}>CONFIRM</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <ScrollView>
-          {this.renderAddSlot()}
-          <Text style={[commonStyles.boldText, {margin: 20, letterSpacing: 1}]}>TIME SLOT</Text>
-          <DateTimePicker
-            isVisible={this.state.endDateTimePickerVisible}
-            onConfirm={this.handleEndDatePicked}
-            onCancel={this.hideEndDateTimePicker}
-            mode='time'
-            titleIOS='Pick end time'
-            date={this.state.selectedDateTime}
-          />
-          { this.state.selectedSlot.length === 0 ?
+      <View style={{flex: 1}}>
+      <ScrollView>
+        {this.renderAddSlot()}
+        <DateTimePicker
+          isVisible={this.state.endDateTimePickerVisible}
+          onConfirm={this.handleEndDatePicked}
+          onCancel={this.hideEndDateTimePicker}
+          mode='time'
+          titleIOS='Pick end time'
+          date={this.state.selectedDateTime}
+        />
+        <Text style={[commonStyles.boldText, {margin: 20, letterSpacing: 1}]}>TIME SLOT</Text>
+        { 
+          this.state.selectedSlot.length === 0 ?
           (
             <View style={{paddingLeft: 15, paddingRight: 15}}>
               <Text style={[commonStyles.boldText, {borderWidth: 1, textAlign: 'center', padding: 15, color: '#d3d3d3', borderColor: '#d3d3d3', backgroundColor: '#fafafa', borderRadius: 4, borderStyle: 'dashed',}]}>
@@ -332,10 +339,9 @@ class ScheduleSlot extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           )
-          }
-          
+        }
         </ScrollView>
-      </Modal>
+      </View>
     )
   }
 }
@@ -406,4 +412,4 @@ const modalStyle = StyleSheet.create({
   }
 });
 
-export default connect(null, { addSchedule, removeSchedule })(ScheduleSlot);
+export default connect(null, { addSchedule, removeSchedule })(SlotModal);

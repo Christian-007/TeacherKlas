@@ -18,6 +18,7 @@ import ExperiencePage from './src/components/CompleteProfile/Experience/Experien
 import CreateSchedulePage from './src/components/CompleteProfile/CreateSchedule/CreateSchedule';
 import SubjectModal from './src/components/CompleteProfile/PersonalDetail/SubjectModal';
 import ExperienceModal from './src/components/CompleteProfile/Experience/ExperienceModal';
+import SlotModal from './src/components/CompleteProfile/CreateSchedule/SlotModal';
 
 const headerStyling = {
   backgroundColor: '#fff',
@@ -89,7 +90,9 @@ const CompleteProfile = createStackNavigator(
     ExperienceModal: {
       screen: ExperienceModal,
     },
-    
+    SlotModal: {
+      screen: SlotModal,
+    },
   },
   {
     navigationOptions: {

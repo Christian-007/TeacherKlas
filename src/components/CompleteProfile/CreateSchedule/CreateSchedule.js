@@ -11,6 +11,7 @@ import UserJourney from '../../../common/UserJourney';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import ScheduleDays from './ScheduleDays';
 import ScheduleSlot from './ScheduleSlot';
+import SlotModal from './SlotModal';
 
 class CreateSchedule extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -106,13 +107,10 @@ class CreateSchedule extends Component {
     )
   }
 
-  onEdit = (day) => {
-    this.setState({
-      modalVisible: true,
-      selectedDay: {
-        dayName: day
-      },
-      selectedSchedule: this.props.profileObj.schedules[day].slots,
+  onPressEdit = (day) => {
+    this.props.navigation.navigate('SlotModal', {
+      dayName: day,
+      slotState: this.props.profileObj.schedules[day].slots,
     });
   }
 
@@ -126,13 +124,6 @@ class CreateSchedule extends Component {
           editSchedule={this.state.schedule}
           onChange={(key, value) => this.handleChange(key,value)}
         /> */}
-        <ScheduleSlot 
-          modalVisible={this.state.modalVisible}
-          onHideModal={() => this.setModalVisible(false)}
-          dayName={this.state.selectedDay.dayName}
-          slotState={this.state.selectedSchedule}
-          onChange={(key, value) => this.handleChange(key,value)}
-        />
         <ScrollView>
           <View style={styles.centerTitle}>
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
@@ -149,31 +140,31 @@ class CreateSchedule extends Component {
             <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>
           </Form>
           <ScheduleDays
-            onEdit={() => this.onEdit("Monday")}
+            onEdit={() => this.onPressEdit("Monday")}
             dayName="Monday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Tuesday")}
+            onEdit={() => this.onPressEdit("Tuesday")}
             dayName="Tuesday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Wednesday")}
+            onEdit={() => this.onPressEdit("Wednesday")}
             dayName="Wednesday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Thursday")}
+            onEdit={() => this.onPressEdit("Thursday")}
             dayName="Thursday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Friday")}
+            onEdit={() => this.onPressEdit("Friday")}
             dayName="Friday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Saturday")}
+            onEdit={() => this.onPressEdit("Saturday")}
             dayName="Saturday"
           />
           <ScheduleDays
-            onEdit={() => this.onEdit("Sunday")}
+            onEdit={() => this.onPressEdit("Sunday")}
             dayName="Sunday"
           />
           {/* <Form style={[styles.inputWrapper, {marginTop: 30}]}>
