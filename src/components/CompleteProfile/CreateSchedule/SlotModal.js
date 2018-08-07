@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView, Alert } from 'react-native';
 import { Toast } from 'native-base';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import commonStyles from '../../../common/CommonStyleSheet';
@@ -36,11 +36,7 @@ class SlotModal extends Component {
   onSave = () => {
     console.log('onSave ', this.state.selectedSlot);
     this.props.addSchedule(this.props.navigation.getParam('dayName'), this.state.selectedSlot);
-    Toast.show({
-      text: "Successfully saved time slot!",
-      buttonText: "Okay",
-      type: "success"
-    });
+    this.showToast('Successfully saved time slots!', 'success');
     this.props.navigation.goBack();
   }
 
@@ -154,6 +150,7 @@ class SlotModal extends Component {
     let isValidSlot = slotTimes.some(this.validateSlots());
 
     if (slotTimes.length === 0 || isValidSlot) {
+      this.showToast('Successfully added time slot!', 'success');
       this.setState(prevState => ({
         selectedSlot: [
           ...prevState.selectedSlot,
@@ -164,13 +161,9 @@ class SlotModal extends Component {
       }), () => {
         console.log(this.state);
       });
-      Toast.show({
-        text: "Successfully added time slot!",
-        buttonText: "Okay",
-        type: "success"
-      });
     } else {
       console.log('INVALID ADD TIME SLOT');
+      this.showErrorAlert();
     }
   }
 
@@ -179,11 +172,8 @@ class SlotModal extends Component {
       selectedSlot: prevState.selectedSlot.filter((slot, index) => index !== scheduleId),
     }), () => {
       console.log(this.state);
-      Toast.show({
-        text: "Deleted a time slot!",
-        type: "danger"
-      });
     });
+    this.showToast('Deleted a time slot!', 'danger');
   }
 
   changeAddSlotTime = (startTime, endTime) => {
@@ -225,10 +215,31 @@ class SlotModal extends Component {
           };   
         })
       }));
+      this.showToast('Successfully changed a time slot!', 'success');
     } else {
       console.log('INVALID CHANGE TIME SLOT');
+      this.showErrorAlert();
     }  
     console.log('state', this.state);
+  }
+
+  showErrorAlert = () => {
+    Alert.alert(
+      'Error: Added Time Clash',
+      'The added time slot clashes with another time slot. Ensure that there is at least 30min difference between previous and next time slots.',
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    );
+  }
+
+  showToast = (message, toastType) => {
+    Toast.show({
+      text: message,
+      type: toastType,
+      buttonText: "Okay",
+    });
   }
 
   renderAddSlot = () => {
