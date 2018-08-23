@@ -29,10 +29,12 @@ const authReducer = (state = initialState, action) => {
 
     case t.LOGIN_SUCCESS:
       const user = action.data;
+      const completeProfile = action.isCompleteProfile;
 
       // Save token and data to Asyncstorage
       AsyncStorage.multiSet([
-          ['user', JSON.stringify(user)]
+        ['user', JSON.stringify(user)],
+        ['isCompleteProfile', JSON.stringify(completeProfile)]
       ]);
 
       return Object.assign({}, state, { 

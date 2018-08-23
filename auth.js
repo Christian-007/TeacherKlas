@@ -19,3 +19,17 @@ export const isSignedIn = () => {
       .catch(err => reject(err));
   });
 };
+
+export const getProfileStatus = () => {
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem('isCompleteProfile')
+      .then(res => {
+        if (res !== null) {
+          resolve(res);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => reject(err));
+  });
+};

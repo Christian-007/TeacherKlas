@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet,
-  Button,
+import {
   TextInput,
   TouchableOpacity,
   View,
@@ -10,7 +8,7 @@ import {
   Alert
 } from 'react-native';
 import commonStyles from '../../common/CommonStyleSheet';
-import { Label, Input, Item } from 'native-base';
+import { Label, Item } from 'native-base';
 import styles from './Stylesheet';
 import { onSignIn } from "../../../auth";
 import PropTypes from 'prop-types';

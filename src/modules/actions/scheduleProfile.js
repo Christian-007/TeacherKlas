@@ -84,7 +84,7 @@ export function submitProfile(data) {
         );
       }),
       promiseProfile(data.workExperience, 'teacherExperience/userId23456'),
-      promiseProfile(data.schedules, 'teacherSchedules/userId23456'),
+      updateProfile(data.schedules, 'teacherSchedules/userId23456'),
       promiseProfile(data.education, 'teacherEducations/userId23456'),
       promiseProfile(data.subjects, 'teacherSubjects/userId23456'),
     ])

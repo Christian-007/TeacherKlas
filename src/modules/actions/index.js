@@ -58,7 +58,7 @@ export function loginUser(data) {
                 console.log('completeProfile: ' + completeProfile);
         
                 // FOR DEVELOPMENT
-                dispatch(loginSuccess(loginApi));
+                dispatch(loginSuccess(loginApi, {isCompleteProfile: completeProfile}));
                 resolve(completeProfile);
               })
               .catch((error) => {
@@ -199,10 +199,11 @@ const authError = (error) => {
   }
 }
 
-const loginSuccess = (userData) => {
+const loginSuccess = (userData, isCompleteProfile) => {
   return {
     type: t.LOGIN_SUCCESS,
-    data: userData
+    data: userData,
+    isCompleteProfile
   }
 }
 

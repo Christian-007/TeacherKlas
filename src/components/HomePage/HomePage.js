@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Badge, Icon, Text, Card } from 'native-base';
+import { Badge, Icon, Text, Card, List, ListItem, Thumbnail, Left, Body, Right, Button, Item } from 'native-base';
 import { 
   View,
   Image,
   ScrollView,
+  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import commonStyles from '../../common/CommonStyleSheet';
 import styles from './Stylesheet';
+import TeacherCard from './TeacherCard';
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -14,106 +17,75 @@ export default class HomePage extends Component {
     this.state = { 
       lessonObj: [
         {
-          id: 1,
-          subject: 'Bahasa Inggris',
-          type: 'PRIVATE',
-          teacherName: 'Christian Ing',
-          date: 'Tuesday, 27 April 2018',
-          timeStart: '09.00',
-          timeEnd: '10.30',
+          name: 'Cardi McWoody',
+          imgUrl: 'https://firebasestorage.googleapis.com/v0/b/klas-project-930c2.appspot.com/o/users%2Fgirl01.jpg?alt=media&token=d33d9915-59a2-4e2f-b7d9-0335f89974a3',
+          subject: 'Math'
         },
         {
-          id: 2,
-          subject: 'Bahasa Inggris',
-          type: 'PRIVATE',
-          teacherName: 'Christian Ing',
-          date: 'Tuesday, 27 April 2018',
-          timeStart: '09.00',
-          timeEnd: '10.30',
+          name: 'John Doe',
+          imgUrl: 'https://firebasestorage.googleapis.com/v0/b/klas-project-930c2.appspot.com/o/users%2Fguy01.jpeg?alt=media&token=6fbe65f4-b998-441f-9583-9df2fc377fb0',
+          subject: 'Math'
         },
         {
-          id: 3,
-          subject: 'Bahasa Inggris',
-          type: 'PRIVATE',
-          teacherName: 'Christian Ing',
-          date: 'Tuesday, 27 April 2018',
-          timeStart: '09.00',
-          timeEnd: '10.30',
+          name: 'Rowan Durkin',
+          imgUrl: 'https://firebasestorage.googleapis.com/v0/b/klas-project-930c2.appspot.com/o/users%2Fguy02.jpg?alt=media&token=723dd73d-6935-4b3a-8d73-0fa0084afd13',
+          subject: 'English'
         }
       ]
     };
   }
 
+  renderOngoingKlas = (data) => {
+    return (
+      <List>
+        {data.map((item, index) => 
+          <ListItem thumbnail key={index}>
+            <Left>
+              <Thumbnail source={{ uri: item.imgUrl }} />
+            </Left>
+            <Body>
+              <Text>{item.name}</Text>
+              <Text note numberOfLines={1}>{item.subject}</Text>
+            </Body>
+            <Right>
+              <Button transparent>
+                <Text>View</Text>
+              </Button>
+            </Right>
+          </ListItem>
+        )}
+      </List>
+    );
+  }
+
   render() {
-    const lessonItems = this.state.lessonObj.map(lesson => (
-      <Card key={lesson.id} style={[styles.cardWrapper]}>
-        <View>
-          <Text style={[commonStyles.boldText, styles.cardSubject]}>{lesson.subject}</Text>
-          <Text style={[commonStyles.fontLato, styles.cardTeacher]}>{lesson.teacherName}</Text>
-          <Badge style={styles.cardType}>
-            <Text style={styles.cardTextStyle}>{lesson.type}</Text>
-          </Badge>
-        </View>
-        <Image
-          style={styles.roundedImg}
-          source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-          resizeMode="contain"
-        />
-      </Card>
-    ));
 
     return (
       <View style={styles.container}>
-        <View style={styles.paddingView}>
-          <View style={{marginTop: 15, borderWidth: 1, borderColor: '#f2f5f7', borderRadius: 4}}>
-            <View style={{backgroundColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 10}}>
-              <Image
-                style={styles.roundedImg}
-                source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-                resizeMode="contain"
-              />
-              <View style={{marginLeft: 10}}>
-                <Text style={[commonStyles.fontLato, {fontSize: 20}]}>David Blain</Text>
-                <Text style={[commonStyles.lightText, {fontSize: 12}]}>Brighton, United Kingdom</Text>
+        <ScrollView>
+          <View style={styles.paddingView}>
+            <TeacherCard 
+              imgUrl='https://firebasestorage.googleapis.com/v0/b/klas-project-930c2.appspot.com/o/users%2Fteacher.jpg?alt=media&token=94bdacad-08cc-4161-b3d2-8d430df927df'
+              teacherName='Josie Rizal'
+              isDiscovered={true}
+            />
+            <View style={{marginTop: 20, borderWidth: 1, borderColor: '#f3f3f3'}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f5f5f8', padding: 15}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={[commonStyles.boldText, {color: '#999fab', letterSpacing: 1}]}>ON-GOING KLAS</Text>
+                  <Badge style={{backgroundColor: '#00b16e', marginLeft: 5}}>
+                    <Text>{this.state.lessonObj.length}</Text>
+                  </Badge>
+                </View>
+                <TouchableOpacity>
+                  <Text style={[commonStyles.boldText, {color: '#3d8af7', letterSpacing: 2}]}>SEE ALL</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{backgroundColor: 'white'}}>
+                {this.renderOngoingKlas(this.state.lessonObj)}
               </View>
             </View>
-            <View style={{alignItems: 'center'}}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
-                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>status</Text>
-                </View>
-                <View style={{width: '40%'}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
-                </View>
-              </View>
-              <View style={{borderTopWidth: 1, borderColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
-                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>schedule</Text>
-                </View>
-                <View style={{width: '40%'}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
-                </View>
-              </View>
-              <View style={{borderTopWidth: 1, borderColor: '#f2f5f7', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: 10}}>
-                <View style={{backgroundColor: '#f2f5f7', width: '40%', borderRadius: 4, padding: 5}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#576c7f'}]}>rate</Text>
-                </View>
-                <View style={{width: '40%'}}>
-                  <Text style={[commonStyles.fontLato, {fontSize: 12, letterSpacing: 1, color: '#00b16e'}]}>Discoverable</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.textWrapper}>
-            <Text style={[commonStyles.boldText, styles.upcomingText]}>ENROLLED LESSONS</Text>
-            <Badge style={{ backgroundColor: '#00b16e' }}>
-              <Text style={{ color: 'white' }}>2</Text>
-            </Badge>
-          </View>
-        </View>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.scheduleWrapper}>
-            { lessonItems }
           </View>
         </ScrollView>
       </View>

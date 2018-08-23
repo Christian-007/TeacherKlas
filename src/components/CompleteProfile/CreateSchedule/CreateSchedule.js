@@ -10,6 +10,7 @@ import { submitProfile } from '../../../modules/actions/scheduleProfile';
 import UserJourney from '../../../common/UserJourney';
 import SubmitBtnWithIcon from '../../../common/SubmitBtnWithIcon';
 import ScheduleDays from './ScheduleDays';
+import Loader from '../../../common/Loader';
 import ScheduleSlot from './ScheduleSlot';
 import SlotModal from './SlotModal';
 
@@ -53,14 +54,23 @@ class CreateSchedule extends Component {
 
   onSubmit() {
     console.log('User data: ', this.props.profileObj);
-    this.props.submitProfile(this.props.profileObj)
-    .then(response => {
-      // navigate to app Home!!
-      console.log('response', response);
-    })
-    .catch(error => {
-      console.log('error', error);
-    });
+    this.props.navigation.navigate('SignedIn');
+    // this.setState({
+    //   loading: true
+    // });
+    // this.props.submitProfile(this.props.profileObj)
+    // .then(response => {
+    //   // navigate to app Home!!
+    //   console.log('response', response);
+    //   this.setState({
+    //     loading: false
+    //   }, () => {
+    //     this.props.navigation.navigate('SignedIn');
+    //   });
+    // })
+    // .catch(error => {
+    //   console.log('error', error);
+    // });
   }
 
   onAddSchedule = (title) => {
@@ -117,13 +127,7 @@ class CreateSchedule extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <ScheduleModal 
-          modalVisible={this.state.modalVisible}
-          onHideModal={() => this.setModalVisible(false)}
-          screenTitle={this.state.screen}
-          editSchedule={this.state.schedule}
-          onChange={(key, value) => this.handleChange(key,value)}
-        /> */}
+        <Loader loading={this.state.loading} />
         <ScrollView>
           <View style={styles.centerTitle}>
             <Text style={[styles.title, commonStyles.boldText]}>Complete Your Profile</Text>
@@ -167,16 +171,6 @@ class CreateSchedule extends Component {
             onEdit={() => this.onPressEdit("Sunday")}
             dayName="Sunday"
           />
-          {/* <Form style={[styles.inputWrapper, {marginTop: 30}]}>
-            <Label style={[commonStyles.formLabel, styles.labelForm]}>SCHEDULES</Label>
-            <TouchableOpacity style={styles.addWorkBtn} onPress={() => this.onAddSchedule('ADD SCHEDULE')}>
-              <Text style={[commonStyles.boldText, styles.workText]}>
-                + Add Schedule
-              </Text>
-            </TouchableOpacity>
-          </Form>
-
-          <ScheduleTable onEditSchedule={(title, scheduleObj) => this.onEditSchedule(title, scheduleObj)}/> */}
 
         </ScrollView>
         <View style={[styles.submitWrapper]}>

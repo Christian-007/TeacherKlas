@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { Text, View, ActivityIndicator } from 'react-native'
-import { isSignedIn } from "./auth";
+import React, { Component } from 'react';
+import { isSignedIn, getProfileStatus } from "./auth";
 import { Root } from "native-base";
-import { SignedOut, SignedIn, createRootNavigator } from "./router";
-// import { SignedOut, createRootNavigator } from "./router";
+import { createRootNavigator } from "./router";
+import firebase from 'react-native-firebase';
+import Loader from './src/common/Loader';
 
 class AppContainer extends Component {
   constructor(props) {
@@ -11,13 +11,29 @@ class AppContainer extends Component {
 
     this.state = {
       signedIn: false,
-      checkedSignIn: false
+      checkedSignIn: false,
+      loading: true,
     };
   }
 
   componentDidMount() {
     isSignedIn()
-      .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
+      .then(res => {
+        if (res === true) {
+          getProfileStatus().then(res => {
+            if (res !== null) {
+              const userProfile = JSON.parse(res);
+              if (userProfile.isCompleteProfile) {
+                this.setState({ signedIn: "SignedIn", checkedSignIn: true })
+              } else {
+                this.setState({ signedIn: "CompleteProfile", checkedSignIn: true })
+              }
+            }
+          });
+        } else {
+          this.setState({ signedIn: "SignedOut", checkedSignIn: true })
+        }
+      })
       .catch(err => alert("An error occurred"));
   }
 

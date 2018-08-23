@@ -171,7 +171,7 @@ export const SignedIn = createBottomTabNavigator({
 );
 
 // Root Navigator: determine the root navigator
-export const createRootNavigator = (signedIn = false) => {
+export const createRootNavigator = (signedIn = "SignedOut") => {
   return createSwitchNavigator(
     {
       SignedIn: {
@@ -185,7 +185,7 @@ export const createRootNavigator = (signedIn = false) => {
       },
     },
     {
-      initialRouteName: signedIn ? "SignedIn" : "CompleteProfile"
+      initialRouteName: signedIn
       // initialRouteName: signedIn ? "SignedIn" : "SignedOut"
     }
   );
